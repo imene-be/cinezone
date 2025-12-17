@@ -1,0 +1,33 @@
+{
+  "public": [
+    { "method": "GET", "path": "/movies", "handler": "movieService.getAllMovies", "useQuery": true },
+    { "method": "GET", "path": "/movies/:id", "handler": "movieService.getMovieById", "useParams": ["id"] },
+    { "method": "GET", "path": "/categories", "handler": "categoryService.getAllCategories" },
+    { "method": "POST", "path": "/auth/register", "handler": "userService.register", "useBody": true, "statusCode": 201 },
+    { "method": "POST", "path": "/auth/login", "handler": "userService.login", "useBody": ["email", "password"] }
+  ],
+  "protected": [
+    { "method": "GET", "path": "/users/profile", "handler": "userService.getProfile", "useUser": true },
+    { "method": "PUT", "path": "/users/profile", "handler": "userService.updateProfile", "useUser": true, "useBody": true },
+    { "method": "PUT", "path": "/users/password", "handler": "userService.updatePassword", "useUser": true, "useBody": true },
+    { "method": "GET", "path": "/watchlist", "handler": "watchlistService.getUserWatchlist", "useUser": true },
+    { "method": "POST", "path": "/watchlist", "handler": "watchlistService.addToWatchlist", "useUser": true, "useBody": ["movieId"], "statusCode": 201 },
+    { "method": "DELETE", "path": "/watchlist/:movieId", "handler": "watchlistService.removeFromWatchlist", "useUser": true, "useParams": ["movieId"] },
+    { "method": "GET", "path": "/notes", "handler": "noteService.getUserNotes", "useUser": true },
+    { "method": "POST", "path": "/notes", "handler": "noteService.createOrUpdateNote", "useUser": true, "useBody": true, "statusCode": 201 },
+    { "method": "PUT", "path": "/notes/:id", "handler": "noteService.updateNote", "useUser": true, "useParams": ["id"], "useBody": true },
+    { "method": "DELETE", "path": "/notes/:id", "handler": "noteService.deleteNote", "useUser": true, "useParams": ["id"] },
+    { "method": "GET", "path": "/history", "handler": "historyService.getUserHistory", "useUser": true, "useQuery": true }
+  ],
+  "admin": [
+     { "method": "GET", "path": "/uploads/:id", "handler": "movieService.getImages", "useBody": true, "useUpload": true, "uploadField": "poster", "useFile": true, "statusCode": 201 },
+    { "method": "POST", "path": "/movies", "handler": "movieService.createMovie", "useBody": true, "useUpload": true, "uploadField": "poster", "useFile": true, "statusCode": 201 },
+    { "method": "PUT", "path": "/movies/:id", "handler": "movieService.updateMovie", "useParams": ["id"], "useBody": true, "useUpload": true, "uploadField": "poster", "useFile": true },
+    { "method": "DELETE", "path": "/movies/:id", "handler": "movieService.deleteMovie", "useParams": ["id"] },
+    { "method": "POST", "path": "/categories", "handler": "categoryService.createCategory", "useBody": true, "statusCode": 201 },
+    { "method": "PUT", "path": "/categories/:id", "handler": "categoryService.updateCategory", "useParams": ["id"], "useBody": true },
+    { "method": "DELETE", "path": "/categories/:id", "handler": "categoryService.deleteCategory", "useParams": ["id"] },
+    { "method": "GET", "path": "/users", "handler": "userService.getAllUsers", "useQuery": true },
+    { "method": "DELETE", "path": "/users/:id", "handler": "userService.deleteUser", "useParams": ["id"] }
+  ]
+}

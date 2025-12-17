@@ -1,0 +1,43 @@
+{
+  "name": "cinezone-backend",
+  "version": "1.0.0",
+  "description": "Backend API CineZone - Plateforme de films",
+  "license": "ISC",
+  "author": "Bentifraouine Imene",
+  "keywords": [
+    "express",
+    "sequelize",
+    "mariadb",
+    "movies"
+  ],
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:routes": "node src/tests/routes.test.js",
+    "validate": "npm run test:routes"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.2.1",
+    "express-validator": "^7.3.1",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mariadb": "^3.4.5",
+    "multer": "^2.0.2",
+    "sequelize": "^6.37.7"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "jest": "^30.2.0",
+    "nodemon": "^3.1.11",
+    "supertest": "^7.1.4"
+  }
+}
