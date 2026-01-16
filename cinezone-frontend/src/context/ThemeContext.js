@@ -13,8 +13,14 @@ export const useTheme = () => {
 export const ThemeProvider = ({ children }) => {
   // Récupérer le thème du localStorage ou utiliser 'dark' par défaut
   const [theme, setTheme] = useState(() => {
-    const savedTheme = localStorage.getItem('theme');
-    return savedTheme || 'dark';
+    try {
+      const savedTheme = localStorage.getItem('theme');
+      // Si aucun thème n'est sauvegardé, utiliser 'dark' par défaut
+      return savedTheme ? savedTheme : 'dark';
+    } catch (error) {
+      // En cas d'erreur (par exemple, localStorage non disponible), utiliser 'dark'
+      return 'dark';
+    }
   });
 
   // Appliquer le thème au chargement et à chaque changement

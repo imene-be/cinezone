@@ -54,7 +54,9 @@ const MoviesEdit = () => {
 
       // Image locale via Axios
       try {
-        const baseUrl = process.env.REACT_APP_BASE_URL || 'http://localhost:8000';
+        let baseUrl = process.env.REACT_APP_BASE_URL || 'http://localhost:8000';
+        // Si `REACT_APP_BASE_URL` contient "/api", retirer la partie "/api" pour accéder aux fichiers statiques
+        if (baseUrl.endsWith('/api')) baseUrl = baseUrl.replace(/\/api\/?$/, '');
         const response = await axios.get(`${baseUrl}${currentPoster}`, {
           responseType: 'blob'
         });
@@ -210,7 +212,7 @@ const MoviesEdit = () => {
       // Si un fichier est uploadé, l'utiliser. Sinon, utiliser l'URL TMDB si disponible
       if (posterFile) {
         fd.append('poster', posterFile);
-      } else if (formData.posterUrl) {
+      } else if (formData.posterUrl && typeof formData.posterUrl === 'string') {
         fd.append('posterUrl', formData.posterUrl);
       }
 

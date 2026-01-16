@@ -4,6 +4,7 @@ import { WatchlistProvider } from './context/WatchlistContext';
 import { HistoryProvider } from './context/HistoryContext';
 import { NotesProvider } from './context/NotesContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { ToastProvider } from './context/ToastContext';
 import MainLayout from './layouts/MainLayout';
 
 // Pages
@@ -29,11 +30,12 @@ import AdminRoute from './components/AdminRoute';
 function App() {
   return (
     <ThemeProvider>
-      <AuthProvider>
-        <WatchlistProvider>
-          <HistoryProvider>
-            <NotesProvider>
-              <Router>
+      <ToastProvider>
+        <AuthProvider>
+          <WatchlistProvider>
+            <HistoryProvider>
+              <NotesProvider>
+                <Router>
                 <Routes>
 
           {/* Pages publiques */}
@@ -201,13 +203,14 @@ function App() {
             }
           />
 
-          </Routes>
-                </Router>
-              </NotesProvider>
-            </HistoryProvider>
-          </WatchlistProvider>
-        </AuthProvider>
-    </ThemeProvider>
+            </Routes>
+                  </Router>
+                </NotesProvider>
+              </HistoryProvider>
+            </WatchlistProvider>
+          </AuthProvider>
+        </ToastProvider>
+      </ThemeProvider>
   );
 }
 

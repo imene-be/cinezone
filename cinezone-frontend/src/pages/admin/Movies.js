@@ -28,7 +28,9 @@ const MoviePoster = ({ poster, title }) => {
 
       // Sinon, charger depuis le backend via Axios
       try {
-        const baseUrl = process.env.REACT_APP_BASE_URL || 'http://localhost:8000';
+        let baseUrl = process.env.REACT_APP_BASE_URL || 'http://localhost:8000';
+        // Si `REACT_APP_BASE_URL` contient "/api", retirer cette partie pour accéder aux fichiers statiques
+        if (baseUrl.endsWith('/api')) baseUrl = baseUrl.replace(/\/api\/?$/, '');
         const response = await axios.get(`${baseUrl}${poster}`, {
           responseType: 'blob'
         });

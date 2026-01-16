@@ -71,13 +71,18 @@ export const movies = {
     return data.movies;
   },
 
+  getAllWithPagination: async (params = {}) => {
+    const { data } = await api.get('/movies', { params });
+    return data; // Returns { movies, pagination }
+  },
+
   getById: async (id) => {
     const { data } = await api.get(`/movies/${id}`);
     return data;
   },
 
-  search: async (query) => {
-    const { data } = await api.get('/movies', { params: { search: query } });
+  search: async (query, params = {}) => {
+    const { data } = await api.get('/movies', { params: { search: query, ...params } });
     return data;
   },
 };
@@ -159,7 +164,10 @@ export const admin = {
   createMovie: async (movieData) => {
     // movieData can be FormData (with poster) or plain object
     if (movieData instanceof FormData) {
-      const { data } = await api.post('/movies', movieData, { headers: { 'Content-Type': 'multipart/form-data' } });
+      // Let axios set the Content-Type (with proper boundary) when sending FormData
+      const { data } = await api.post('/movies', movieData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
       return data;
     }
     const { data } = await api.post('/movies', movieData);
@@ -168,7 +176,10 @@ export const admin = {
 
   updateMovie: async (movieId, movieData) => {
     if (movieData instanceof FormData) {
-      const { data } = await api.put(`/movies/${movieId}`, movieData, { headers: { 'Content-Type': 'multipart/form-data' } });
+      // Let axios set the Content-Type (with proper boundary) when sending FormData
+      const { data } = await api.put(`/movies/${movieId}`, movieData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
       return data;
     }
     const { data } = await api.put(`/movies/${movieId}`, movieData);
@@ -209,9 +220,7 @@ export const admin = {
 
   // Media upload (si nécessaire pour les images de films)
   uploadImage: async (formData) => {
-    const { data } = await api.post('/admin/upload', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
+    const { data } = await api.post('/admin/upload', formData);
     return data;
   },
 };
