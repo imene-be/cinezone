@@ -87,8 +87,8 @@ const AdminMovies = () => {
 
   const fetchMovies = async () => {
     try {
-      const data = await moviesApi.getAll({ includeAllStatus: true, limit: 1000 });
-      setMovies(data.movies || data || []);
+      const data = await moviesApi.getAll({ limit: 500 });
+      setMovies(Array.isArray(data) ? data : []);
     } catch (err) {
       setError('Erreur lors du chargement des films');
       console.error(err);

@@ -89,9 +89,14 @@ export const movies = {
 
 // ===================== CATEGORIES =====================
 export const categories = {
-  getAll: async () => {
-    const { data } = await api.get('/categories');
-    return data;
+  getAll: async (params = {}) => {
+    const { data } = await api.get('/categories', { params });
+    return data.categories || data;
+  },
+
+  getAllWithPagination: async (params = {}) => {
+    const { data } = await api.get('/categories', { params });
+    return data; // Returns { categories, pagination }
   },
 };
 

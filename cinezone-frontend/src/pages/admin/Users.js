@@ -20,7 +20,7 @@ const AdminUsers = () => {
 
   const fetchUsers = async () => {
     try {
-      const data = await admin.getAllUsers();
+      const data = await admin.getAllUsers({ limit: 500 });
       setUsers(data.users || []);
     } catch (err) {
       setError('Erreur lors du chargement des utilisateurs');

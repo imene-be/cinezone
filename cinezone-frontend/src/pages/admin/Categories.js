@@ -21,8 +21,8 @@ const AdminCategories = () => {
 
   const fetchCategories = async () => {
     try {
-      const data = await categoriesApi.getAll();
-      setCategories(data.categories || data || []);
+      const data = await categoriesApi.getAll({ limit: 500 });
+      setCategories(Array.isArray(data) ? data : []);
     } catch (err) {
       setError('Erreur lors du chargement des catégories');
       console.error(err);
