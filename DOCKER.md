@@ -45,6 +45,6 @@ docker-compose logs -f
 # Rebuilder
 docker-compose up -d --build
 
-# Supprimer les données (⚠️)
+# Supprimer les données 
 docker-compose down -v
 ```
