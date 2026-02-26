@@ -1,10 +1,10 @@
-# 🎬 CineZone
+# CineZone
 
 > Plateforme de découverte de films, catalogue, compte utilisateur et back-office admin. Projet fil rouge ESCEN.
 
 ---
 
-## ✨ Fonctionnalités
+## Fonctionnalités
 
 **Catalogue & Recherche** : parcours par catégories, filtres, tri, pagination, synchro URL
 
@@ -16,7 +16,7 @@
 
 ---
 
-## 🛠️ Technologies
+## Technologies
 
 ### Frontend
 | Technologie | Description |
@@ -50,7 +50,7 @@
 
 ---
 
-## 🚀 Installation
+## Installation
 
 ### 1. Cloner le projet
 
@@ -98,7 +98,7 @@ cd cinezone-frontend && npm install --legacy-peer-deps && npm start
 
 ---
 
-## 🧪 Tests
+## Tests
 
 ```bash
 cd cinezone-backend && npm test
@@ -111,11 +111,11 @@ CI/CD automatique via GitHub Actions sur `dev` et `main`.
 
 ---
 
-## 👤 Auteur
+## Auteur
 
 **Bentifraouine Imène**  Mastère Stratégie Digitale, Manager de projets informatiques (RNCP38905)
 
-📧 bentifraouineimene@gmail.com · 🌐 [imenebe.fr](https://imenebe.fr) · 🐙 [GitHub](https://github.com/imene-be/cinezone)
+bentifraouineimene@gmail.com · [imenebe.fr](https://imenebe.fr) · [GitHub](https://github.com/imene-be/cinezone)
 
 ---
 
