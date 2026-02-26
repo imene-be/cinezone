@@ -1,23 +1,18 @@
 # 🎬 CineZone
 
-> Application web full-stack de découverte et gestion de films — Projet fil rouge ESCEN
-
-[![Node.js](https://img.shields.io/badge/Node.js-20.x-green.svg)](https://nodejs.org/)
-[![React](https://img.shields.io/badge/React-19.2-blue.svg)](https://reactjs.org/)
-[![Express](https://img.shields.io/badge/Express-5.2-lightgrey.svg)](https://expressjs.com/)
-[![License](https://img.shields.io/badge/License-ISC-yellow.svg)](LICENSE)
+> Plateforme de découverte de films — catalogue, compte utilisateur et back-office admin. Projet fil rouge ESCEN.
 
 ---
 
 ## ✨ Fonctionnalités
 
-- Catalogue de films par catégories, recherche, filtres multi-critères, tri et pagination
-- Synchronisation URL ↔ UI + mémorisation des filtres (localStorage)
-- Inscription avec validations fortes, connexion JWT (7j), profil modifiable
-- Watchlist, notes (0–5 étoiles), historique de visionnage
-- Back-office admin : CRUD films (upload + import TMDB), catégories, utilisateurs
-- Thème sombre / clair, responsive mobile-first, notifications toast
-- Accessibilité RGAA (ARIA, navigation clavier, contrastes WCAG 2.1 AA)
+**Catalogue & Recherche** — parcours par catégories, filtres, tri, pagination, synchro URL
+
+**Compte** — inscription, connexion JWT, profil, watchlist, notes, historique
+
+**Admin** — CRUD films (upload + import TMDB), catégories, gestion utilisateurs
+
+**Interface** — thème sombre/clair, responsive, notifications, accessibilité RGAA
 
 ---
 
@@ -98,7 +93,7 @@ PHPMYADMIN_PORT=8080
 cd cinezone-backend && npm test
 cd cinezone-frontend && npm test
 npm run cypress        # E2E interactif
-npm run test:e2e       # E2E headless (app doit tourner sur :3000)
+npm run test:e2e       # E2E headless (port 3000)
 ```
 
 CI/CD automatique via GitHub Actions sur `dev` et `main`.
@@ -107,7 +102,7 @@ CI/CD automatique via GitHub Actions sur `dev` et `main`.
 
 ## 👤 Auteur
 
-**Bentifraouine Imène** — Mastère Stratégie Digitale, Manager de projets informatiques (RNCP38905)
+**Bentifraouine Imène**  Mastère Stratégie Digitale, Manager de projets informatiques (RNCP38905)
 
 📧 bentifraouineimene@gmail.com · 🌐 [imenebe.fr](https://imenebe.fr) · 🐙 [GitHub](https://github.com/imene-be/cinezone)
 
