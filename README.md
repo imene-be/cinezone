@@ -1,106 +1,75 @@
-# CineZone
+# 🎬 CineZone
 
-Application web full-stack de découverte et gestion de films — Projet fil rouge ESCEN.
-
-[![Node.js](https://img.shields.io/badge/Node.js-20.x-green.svg)](https://nodejs.org/)
-[![React](https://img.shields.io/badge/React-19.2-blue.svg)](https://reactjs.org/)
-[![Express](https://img.shields.io/badge/Express-5.2-lightgrey.svg)](https://expressjs.com/)
-[![License](https://img.shields.io/badge/License-ISC-yellow.svg)](LICENSE)
+> Plateforme de découverte de films, catalogue, compte utilisateur et back-office admin. Projet fil rouge ESCEN.
 
 ---
 
-## Stack technique
+## ✨ Fonctionnalités
 
-| Couche | Technologies |
-|--------|-------------|
-| Frontend | React 19, React Router 7, Tailwind CSS 3.4, Axios |
-| Backend | Node.js 20, Express 5, Sequelize 6, JWT, Multer, Express-Validator |
-| Base de données | MariaDB 10.11 |
-| Tests | Jest (unitaires), Cypress (E2E) |
-| DevOps | Docker, Docker Compose, GitHub Actions |
+**Catalogue & Recherche** : parcours par catégories, filtres, tri, pagination, synchro URL
 
----
+**Compte** : inscription, connexion JWT, profil, watchlist, notes, historique
 
-## Fonctionnalités
+**Admin** : CRUD films (upload + import TMDB), catégories, gestion utilisateurs
 
-**Catalogue**
-- Parcours par catégories, recherche full-text, filtres (catégorie, note min, tri), pagination
-- Synchronisation des filtres avec l'URL + mémorisation en localStorage
-
-**Compte utilisateur**
-- Inscription avec validations fortes (front + Express-Validator), connexion JWT (7 jours)
-- Watchlist, notes 0–5 étoiles, historique de visionnage, profil modifiable
-
-**Administration** *(rôle admin)*
-- CRUD films avec upload d'affiche et import TMDB
-- CRUD catégories, gestion des utilisateurs
-
-**Interface**
-- Thème sombre / clair persistant, responsive mobile-first, notifications toast
+**Interface** : thème sombre/clair, responsive, notifications, accessibilité RGAA
 
 ---
 
-## Structure
+## 🛠️ Technologies
 
-```
-cineZone/
-├── cinezone-frontend/        # React
-│   └── src/
-│       ├── components/       # Composants réutilisables
-│       ├── pages/            # Pages + admin/
-│       ├── context/          # Auth, Theme, Toast, Watchlist, Notes, History
-│       └── utils/            # Client API, TMDB
-│
-├── cinezone-backend/         # API REST Express
-│   └── src/
-│       ├── models/           # Sequelize
-│       ├── services/         # Logique métier
-│       ├── middlewares/      # Auth, validators, upload
-│       ├── config/routes.json
-│       └── __tests__/
-│
-├── .github/workflows/tests.yml
-├── docker-compose.yml
-└── README.md
-```
+### Frontend
+| Technologie | Description |
+|-------------|-------------|
+| React | Bibliothèque UI |
+| React Router | Routing SPA |
+| Tailwind CSS | Framework CSS |
+| Axios | Client HTTP |
+| Cypress | Tests E2E |
+| Jest | Tests unitaires |
+
+### Backend
+| Technologie | Description |
+|-------------|-------------|
+| Node.js | Runtime JavaScript |
+| Express | Framework web |
+| Sequelize | ORM |
+| MariaDB | Base de données |
+| JWT | Authentification |
+| Multer | Upload fichiers |
+| Express-Validator | Validation des entrées |
+| Helmet | Sécurité HTTP |
+| Jest | Tests unitaires |
+
+### DevOps
+| Technologie | Description |
+|-------------|-------------|
+| Docker | Conteneurisation |
+| Docker Compose | Orchestration |
+| GitHub Actions | CI/CD |
 
 ---
 
-## Lancer le projet
+## 🚀 Installation
 
-### Manuellement
-
-> Prérequis : Node.js >= 20, MariaDB >= 10.11
+> Prérequis : Node.js >= 20. et MariaDB >= 10.11
 
 ```bash
 # Backend
-cd cinezone-backend
-npm install
-npm run dev          # http://localhost:8000
+cd cinezone-backend && npm install && npm run dev
 
 # Frontend (nouveau terminal)
-cd cinezone-frontend
-npm install --legacy-peer-deps
-npm start            # http://localhost:3000
-```
+cd cinezone-frontend && npm install --legacy-peer-deps && npm start
 
-### Avec Docker
-
-```bash
+# Ou avec Docker
 docker-compose up -d
 ```
 
-| Service | URL |
-|---------|-----|
-| Frontend | http://localhost:3000 |
-| API | http://localhost:8000/api |
-| PHPMyAdmin | http://localhost:8080 |
-
 ---
 
-## Variables d'environnement
+## ⚙️ Configuration
 
-Créer un `.env` à la racine du backend :
+Créer un `.env` à la racine du projet :
 
 ```env
 DB_HOST=localhost
@@ -108,59 +77,35 @@ DB_PORT=3306
 DB_NAME=cinezone
 DB_USER=root
 DB_PASSWORD=root_password
-
-PORT=8000
 NODE_ENV=development
+PORT=8000
 JWT_SECRET=your_secret_key
-
+REACT_APP_BASE_URL=http://localhost:8000
 REACT_APP_API_URL=http://localhost:8000/api
+PHPMYADMIN_PORT=8080
 ```
 
 ---
 
-## API — Routes principales
-
-```
-POST   /api/auth/register
-POST   /api/auth/login
-
-GET    /api/movies              ?page, limit, search, category, minRating, sortBy
-GET    /api/movies/:id
-POST   /api/movies              (admin)
-PUT    /api/movies/:id          (admin)
-DELETE /api/movies/:id          (admin)
-
-GET/POST/DELETE  /api/watchlist
-GET/POST/DELETE  /api/notes
-GET              /api/history
-```
-
----
-
-## Tests
+## 🧪 Tests
 
 ```bash
-# Unitaires backend
 cd cinezone-backend && npm test
-
-# Unitaires frontend
 cd cinezone-frontend && npm test
-
-# E2E Cypress (app doit tourner sur :3000)
-npm run cypress       # interface graphique
-npm run test:e2e      # headless
+npm run cypress        # E2E interactif
+npm run test:e2e       # E2E headless (port 3000)
 ```
 
-CI/CD automatique via GitHub Actions sur les branches `dev` et `main`.
+CI/CD automatique via GitHub Actions sur `dev` et `main`.
 
 ---
 
-## Auteur
+## 👤 Auteur
 
-**Imène Bentifraouine** — Mastère Stratégie Digitale, Manager de projets informatiques (RNCP38905)
+**Bentifraouine Imène**  Mastère Stratégie Digitale, Manager de projets informatiques (RNCP38905)
 
-bentifraouineimene@gmail.com · [imenebe.fr](https://imenebe.fr) · [GitHub](https://github.com/imene-be/cinezone)
+📧 bentifraouineimene@gmail.com · 🌐 [imenebe.fr](https://imenebe.fr) · 🐙 [GitHub](https://github.com/imene-be/cinezone)
 
 ---
 
-*Projet scolaire non commercial — © 2025 Bentifraouine Imène*
+<p align="center">Projet fil rouge N4 ESCEN</p>
