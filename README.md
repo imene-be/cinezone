@@ -56,10 +56,10 @@
 
 ```bash
 # Backend
-cd cinezone-backend && npm install && npm run dev    
+cd cinezone-backend && npm install && npm run dev
 
 # Frontend (nouveau terminal)
-cd cinezone-frontend && npm install --legacy-peer-deps && npm start    
+cd cinezone-frontend && npm install --legacy-peer-deps && npm start
 
 # Ou avec Docker
 docker-compose up -d
