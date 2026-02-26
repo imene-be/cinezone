@@ -62,12 +62,20 @@ cd cinezone
 ### 2. Créer le fichier `.env` à la racine
 
 ```env
+DB_HOST=localhost
+DB_PORT=3306
 DB_ROOT_PASSWORD=root
 DB_NAME=cineZone
 DB_USER=cinezone
 DB_PASSWORD=cinezone
+NODE_ENV=development
+PORT=8000
 JWT_SECRET=your_secret_key
 TMDB_API_KEY=your_tmdb_api_key
+REACT_APP_BASE_URL=http://localhost:8000/api
+FRONTEND_PORT=3000
+BACKEND_PORT=8000
+PHPMYADMIN_PORT=8080
 ```
 
 ### 3. Lancer
