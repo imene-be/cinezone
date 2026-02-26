@@ -52,37 +52,48 @@
 
 ## 🚀 Installation
 
-> Prérequis : Node.js >= 20. et MariaDB >= 10.11
+### 1. Cloner le projet
 
 ```bash
-# Backend
-cd cinezone-backend && npm install && npm run dev
+git clone https://github.com/imene-be/cinezone.git
+cd cinezone
+```
 
-# Frontend (nouveau terminal)
-cd cinezone-frontend && npm install --legacy-peer-deps && npm start
+### 2. Créer le fichier `.env` à la racine
 
-# Ou avec Docker
+```env
+DB_ROOT_PASSWORD=root
+DB_NAME=cineZone
+DB_USER=cinezone
+DB_PASSWORD=cinezone
+JWT_SECRET=your_secret_key
+TMDB_API_KEY=your_tmdb_api_key
+```
+
+### 3. Lancer
+
+**Avec Docker (recommandé) :**
+
+```bash
 docker-compose up -d
 ```
 
----
+| Service | URL |
+|---------|-----|
+| Frontend | http://localhost:3000 |
+| API | http://localhost:8000/api |
+| PHPMyAdmin | http://localhost:8080 |
 
-## ⚙️ Configuration
+**Sans Docker :**
 
-Créer un `.env` à la racine du projet :
+> Prérequis : Node.js >= 20 et MariaDB >= 10.11
 
-```env
-DB_HOST=localhost
-DB_PORT=3306
-DB_NAME=cinezone
-DB_USER=root
-DB_PASSWORD=root_password
-NODE_ENV=development
-PORT=8000
-JWT_SECRET=your_secret_key
-REACT_APP_BASE_URL=http://localhost:8000
-REACT_APP_API_URL=http://localhost:8000/api
-PHPMYADMIN_PORT=8080
+```bash
+# Terminal 1 — Backend
+cd cinezone-backend && npm install && npm run dev
+
+# Terminal 2 — Frontend
+cd cinezone-frontend && npm install --legacy-peer-deps && npm start
 ```
 
 ---
