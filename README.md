@@ -59,18 +59,15 @@ git clone https://github.com/imene-be/cinezone.git
 cd cinezone
 ```
 
-### 2. Créer le fichier `.env` à la racine
+### 2. Configurer l'environnement
 
-```env
-DB_ROOT_PASSWORD=root
-DB_NAME=cineZone
-DB_USER=cinezone
-DB_PASSWORD=cinezone
-JWT_SECRET=your_secret_key
-TMDB_API_KEY=your_tmdb_api_key
+```bash
+cp .env.example .env
 ```
 
-> La clé TMDB est gratuite sur [themoviedb.org](https://www.themoviedb.org/settings/api)
+Ouvrir `.env` et renseigner :
+- `TMDB_API_KEY` — clé gratuite sur [themoviedb.org](https://www.themoviedb.org/settings/api)
+- `JWT_SECRET` — n'importe quelle longue chaîne aléatoire
 
 ### 3. Lancer
 
