@@ -57,6 +57,10 @@ app.get('/api', (req, res) => {
   res.json({ message: 'API CineZone', status: 'active' });
 });
 
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
+
 app.use('/api', routes);
 
 // Error handlers
