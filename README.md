@@ -62,47 +62,29 @@ cd cinezone
 ### 2. Créer le fichier `.env` à la racine
 
 ```env
-DB_HOST=localhost
-DB_PORT=3306
 DB_ROOT_PASSWORD=root
 DB_NAME=cineZone
 DB_USER=cinezone
 DB_PASSWORD=cinezone
-NODE_ENV=development
-PORT=8000
 JWT_SECRET=your_secret_key
 TMDB_API_KEY=your_tmdb_api_key
-REACT_APP_BASE_URL=http://localhost:8000/api
-FRONTEND_PORT=3000
-BACKEND_PORT=8000
-PHPMYADMIN_PORT=8080
 ```
 
-### 3. Lancer
+> La clé TMDB est gratuite sur [themoviedb.org](https://www.themoviedb.org/settings/api)
 
-**Avec Docker (recommandé) :**
+### 3. Lancer
 
 ```bash
 docker-compose up -d
 ```
 
+Attendre ~30 secondes le temps que les services démarrent.
+
 | Service | URL |
 |---------|-----|
-| Frontend | http://localhost:3000 |
+| App | http://localhost:3000 |
 | API | http://localhost:8000/api |
 | PHPMyAdmin | http://localhost:8080 |
-
-**Sans Docker :**
-
-> Prérequis : Node.js >= 20 et MariaDB >= 10.11
-
-```bash
-# Terminal 1 — Backend
-cd cinezone-backend && npm install && npm run dev
-
-# Terminal 2 — Frontend
-cd cinezone-frontend && npm install --legacy-peer-deps && npm start
-```
 
 ---
 
