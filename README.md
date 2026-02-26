@@ -57,7 +57,7 @@
 
 ## 🚀 Installation
 
-> Prérequis : Node.js >= 20.x, MariaDB >= 10.11
+> Prérequis : Node.js >= 20. et MariaDB >= 10.11
 
 ```bash
 # Backend
@@ -113,4 +113,4 @@ CI/CD automatique via GitHub Actions sur `dev` et `main`.
 
 ---
 
-<p align="center">Fait avec ❤️ pour le projet fil rouge ESCEN</p>
+<p align="center">Projet fil rouge N4 ESCEN</p>
