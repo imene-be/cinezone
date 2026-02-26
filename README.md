@@ -1,18 +1,18 @@
 # 🎬 CineZone
 
-> Plateforme de découverte de films — catalogue, compte utilisateur et back-office admin. Projet fil rouge ESCEN.
+> Plateforme de découverte de films, catalogue, compte utilisateur et back-office admin. Projet fil rouge ESCEN.
 
 ---
 
 ## ✨ Fonctionnalités
 
-**Catalogue & Recherche** — parcours par catégories, filtres, tri, pagination, synchro URL
+**Catalogue & Recherche** : parcours par catégories, filtres, tri, pagination, synchro URL
 
-**Compte** — inscription, connexion JWT, profil, watchlist, notes, historique
+**Compte** : inscription, connexion JWT, profil, watchlist, notes, historique
 
-**Admin** — CRUD films (upload + import TMDB), catégories, gestion utilisateurs
+**Admin** : CRUD films (upload + import TMDB), catégories, gestion utilisateurs
 
-**Interface** — thème sombre/clair, responsive, notifications, accessibilité RGAA
+**Interface** : thème sombre/clair, responsive, notifications, accessibilité RGAA
 
 ---
 
