@@ -164,9 +164,8 @@ const Catalog = () => {
     try {
       setLoading(true);
       const [moviesData, categoriesData] = await Promise.all([
-        movies.getAll(),
+        movies.getAll({ limit: 500 }),
         categories.getAll(),
-        
       ]);
 
       const moviesList = moviesData.movies || moviesData;
@@ -176,19 +175,26 @@ const Catalog = () => {
       setAllMovies(moviesList);
       setAllCategories(categoriesList);
 
-      // Organiser les films par catégorie
-      let moviesByCat = []
+      // Organiser les films par catégorie (uniquement les catégories non vides)
+      const assignedMovieIds = new Set();
+      let moviesByCat = [];
       categoriesList.forEach(element => {
-        const moviesThisCateg = moviesList.filter((movie) =>{
-          return movie.categories?.some((cat) => cat.id === element.id)
-        })
-        moviesByCat.push({
-          ...element,
-          movies:moviesThisCateg
-        })
+        const moviesThisCateg = moviesList.filter((movie) => {
+          return movie.categories?.some((cat) => cat.id === element.id);
+        });
+        if (moviesThisCateg.length > 0) {
+          moviesThisCateg.forEach(m => assignedMovieIds.add(m.id));
+          moviesByCat.push({ ...element, movies: moviesThisCateg });
+        }
       });
+
+      // Films sans catégorie → section "Tous les films"
+      const uncategorized = moviesList.filter(m => !assignedMovieIds.has(m.id));
+      if (uncategorized.length > 0) {
+        moviesByCat.push({ id: 0, name: 'Tous les films', slug: '_all', movies: uncategorized });
+      }
+
       setMoviesByCategory(moviesByCat);
-      // La watchlist est maintenant gérée par le contexte
     } catch (err) {
       setError('Une erreur est survenue');
       console.error(err);

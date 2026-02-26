@@ -59,29 +59,42 @@ git clone https://github.com/imene-be/cinezone.git
 cd cinezone
 ```
 
-### 2. Configurer l'environnement
+### 2. Créer le fichier `.env`
 
-```bash
-cp .env.example .env
+Créer un fichier `.env` à la racine avec ce contenu :
+
+```env
+# Base de données
+DB_NAME=cineZone
+DB_USER=root
+DB_PASSWORD=root
+
+# Backend
+JWT_SECRET=changez_cette_valeur_avec_une_longue_chaine_aleatoire
+
+# TMDB — clé gratuite sur https://www.themoviedb.org/settings/api
+TMDB_API_KEY=votre_cle_tmdb_ici
 ```
 
-Ouvrir `.env` et renseigner :
-- `TMDB_API_KEY` — clé gratuite sur [themoviedb.org](https://www.themoviedb.org/settings/api)
+Les deux valeurs à renseigner obligatoirement :
 - `JWT_SECRET` — n'importe quelle longue chaîne aléatoire
+- `TMDB_API_KEY` — clé gratuite sur [themoviedb.org](https://www.themoviedb.org/settings/api)
 
 ### 3. Lancer
 
 ```bash
-docker-compose up -d
+docker-compose up -d --build
 ```
 
-Attendre ~30 secondes le temps que les services démarrent.
+Attendre ~40 secondes le temps que les services démarrent.
 
 | Service | URL |
 |---------|-----|
 | App | http://localhost:3000 |
 | API | http://localhost:8000/api |
 | PHPMyAdmin | http://localhost:8080 |
+
+Connexion PHPMyAdmin : utilisateur `root`, mot de passe `root`.
 
 ---
 

@@ -2,7 +2,6 @@ import axios from 'axios';
 
 const TMDB_API_KEY = process.env.REACT_APP_TMDB_API_KEY;
 const TMDB_BASE_URL = process.env.REACT_APP_TMDB_BASE_URL || 'https://api.themoviedb.org/3';
-const TMDB_IMAGE_BASE_URL = process.env.REACT_APP_TMDB_IMAGE_BASE_URL || 'https://image.tmdb.org/t/p/w500';
 
 // Détecter si c'est un Bearer Token (JWT) ou une clé API
 const isBearerToken = TMDB_API_KEY && TMDB_API_KEY.startsWith('eyJ');
@@ -74,7 +73,7 @@ export const convertTmdbToMovie = (tmdbMovie) => {
     releaseDate: tmdbMovie.release_date || '',
     duration: tmdbMovie.runtime || '',
     poster: tmdbMovie.poster_path
-      ? `${TMDB_IMAGE_BASE_URL}${tmdbMovie.poster_path}`
+      ? getTmdbImageUrl(tmdbMovie.poster_path, 'w500')
       : '',
     trailer: '', // TMDB ne fournit pas directement le trailer dans les détails basiques
     tmdbId: tmdbMovie.id,

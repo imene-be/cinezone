@@ -30,7 +30,8 @@ const MovieCard = ({ movie }) => {
 
       // Sinon, charger depuis le backend via Axios
       try {
-        const baseUrl = process.env.REACT_APP_BASE_URL || 'http://localhost:8000';
+        let baseUrl = process.env.REACT_APP_BASE_URL || 'http://localhost:8000';
+        if (baseUrl.endsWith('/api')) baseUrl = baseUrl.replace(/\/api\/?$/, '');
         const response = await axios.get(`${baseUrl}${movie.poster}`, {
           responseType: 'blob'
         });
