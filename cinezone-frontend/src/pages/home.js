@@ -68,21 +68,23 @@ const Home = () => {
 
         {/* Contenu Hero */}
         <div className="relative z-20 flex flex-col items-center justify-center h-full text-center px-6 max-w-7xl mx-auto">
-          <h1 className={`text-5xl md:text-7xl font-bold mb-6 drop-shadow-lg ${
+          <h1 className={`text-5xl md:text-7xl font-bold mb-6 drop-shadow-lg animate-fadeInUp ${
             theme === 'dark' ? 'text-white' : 'text-gray-900'
           }`}>
             Découvrez des milliers de films
           </h1>
 
-          <p className={`text-xl md:text-2xl mb-8 drop-shadow-md ${
+          <p className={`text-xl md:text-2xl mb-8 drop-shadow-md animate-fadeInUp delay-200 ${
             theme === 'dark' ? 'text-gray-200' : 'text-gray-700'
           }`}>
             Votre catalogue de films en ligne
           </p>
 
-          <Button variant="primary" size="lg" onClick={handleGetStarted}>
-            {isAuthenticated ? 'Parcourir le catalogue' : 'Commencer'}
-          </Button>
+          <div className="animate-fadeInUp delay-400">
+            <Button variant="primary" size="lg" onClick={handleGetStarted}>
+              {isAuthenticated ? 'Parcourir le catalogue' : 'Commencer'}
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -95,47 +97,52 @@ const Home = () => {
             Questions fréquentes
           </h2>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             {faqData.map((item, index) => (
-              <div key={index} className={`rounded-lg w-full ${
-                theme === 'dark' ? 'bg-gray-800' : 'bg-white border border-gray-300'
-              }`}>
+              <div
+                key={index}
+                className={`rounded-xl w-full overflow-hidden transition-all duration-200 ${
+                  theme === 'dark'
+                    ? 'bg-gray-800 hover:bg-gray-800/80'
+                    : 'bg-white border border-gray-200 hover:border-gray-300'
+                } ${openIndex === index ? 'ring-1 ring-cyan-400/30' : ''}`}
+              >
                 <button
                   onClick={() => toggle(index)}
-                  className={`w-full flex justify-between items-center px-6 py-5 text-left transition ${
-                    theme === 'dark' ? 'hover:bg-gray-750' : 'hover:bg-gray-50'
-                  }`}
+                  className="w-full flex justify-between items-center px-6 py-5 text-left"
                 >
-                  <span className={`text-xl font-medium ${
+                  <span className={`text-lg font-medium ${
                     theme === 'dark' ? 'text-white' : 'text-gray-900'
                   }`}>
                     {item.question}
                   </span>
 
                   <svg
-                    className={`w-6 h-6 text-cyan-400 transform transition-transform duration-300 flex-shrink-0 ml-4 ${
-                      openIndex === index ? "rotate-180" : "rotate-0"
+                    className={`w-5 h-5 text-cyan-400 transform transition-transform duration-300 flex-shrink-0 ml-4 ${
+                      openIndex === index ? 'rotate-180' : 'rotate-0'
                     }`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
 
-                {openIndex === index && (
-                  <div className={`px-6 pb-5 text-lg animate-fadeIn ${
-                    theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                {/* Transition fluide par max-height */}
+                <div
+                  style={{
+                    maxHeight: openIndex === index ? '400px' : '0px',
+                    transition: 'max-height 0.35s cubic-bezier(0.4,0,0.2,1)',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <div className={`px-6 pb-5 text-base leading-relaxed ${
+                    theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
                   }`}>
                     {item.answer}
                   </div>
-                )}
+                </div>
               </div>
             ))}
           </div>

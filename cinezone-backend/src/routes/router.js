@@ -1,5 +1,6 @@
 const routes = require('../config/routes.json');
 const upload = require('../middlewares/upload');
+const validators = require('../middlewares/validators');
 
 /**
  * Génère un handler de route
@@ -29,6 +30,16 @@ const createHandler = (config, services) => async (req, res, next) => {
   }
 };
 
+/**
+ * Récupère les middlewares de validation pour une route
+ */
+const getValidationMiddlewares = (validationName) => {
+  if (!validationName || !validators[validationName]) {
+    return [];
+  }
+  return validators[validationName];
+};
+
 // Générer toutes les routes
 module.exports = (router, services, middlewares) => {
   const { protect, isAdmin } = middlewares;
@@ -36,18 +47,21 @@ module.exports = (router, services, middlewares) => {
   routes.public.forEach(r => {
     const middle = [];
     if (r.useUpload) middle.push(upload.single(r.uploadField || 'file'));
+    middle.push(...getValidationMiddlewares(r.validation));
     router[r.method.toLowerCase()](r.path, ...middle, createHandler(r, services));
   });
 
   routes.protected.forEach(r => {
     const middle = [protect];
     if (r.useUpload) middle.push(upload.single(r.uploadField || 'file'));
+    middle.push(...getValidationMiddlewares(r.validation));
     router[r.method.toLowerCase()](r.path, ...middle, createHandler(r, services));
   });
 
   routes.admin.forEach(r => {
     const middle = [protect, isAdmin];
     if (r.useUpload) middle.push(upload.single(r.uploadField || 'file'));
+    middle.push(...getValidationMiddlewares(r.validation));
     router[r.method.toLowerCase()](r.path, ...middle, createHandler(r, services));
   });
 

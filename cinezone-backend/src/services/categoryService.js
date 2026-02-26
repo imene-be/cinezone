@@ -12,10 +12,25 @@ const slugify = (text) => {
     .replace(/^-+|-+$/g, '');
 };
 
-exports.getAllCategories = async () => {
-  return await Category.findAll({
-    order: [['name', 'ASC']]
+exports.getAllCategories = async (query = {}) => {
+  const { page = 1, limit = 500 } = query;
+  const offset = (page - 1) * limit;
+
+  const { count, rows } = await Category.findAndCountAll({
+    order: [['name', 'ASC']],
+    limit: parseInt(limit),
+    offset: parseInt(offset)
   });
+
+  return {
+    categories: rows,
+    pagination: {
+      total: count,
+      page: parseInt(page),
+      limit: parseInt(limit),
+      pages: Math.ceil(count / limit)
+    }
+  };
 };
 
 exports.getCategoryById = async (categoryId) => {

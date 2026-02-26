@@ -19,16 +19,21 @@ const AdminDashboard = () => {
 
   const fetchStats = async () => {
     try {
-      const [moviesData, categoriesData, usersData] = await Promise.all([
-        moviesApi.getAll({ includeAllStatus: true, limit: 1000 }),
-        categoriesApi.getAll(),
-        admin.getAllUsers(),
+      // Utiliser Promise.allSettled pour que les erreurs individuelles n'arrêtent pas tout
+      const [moviesResult, categoriesResult, usersResult] = await Promise.allSettled([
+        moviesApi.getAllWithPagination({ limit: 500 }),
+        categoriesApi.getAllWithPagination({ limit: 500 }),
+        admin.getAllUsers({ limit: 500 }),
       ]);
 
+      const moviesData = moviesResult.status === 'fulfilled' ? moviesResult.value : { pagination: { total: 0 } };
+      const categoriesData = categoriesResult.status === 'fulfilled' ? categoriesResult.value : { pagination: { total: 0 } };
+      const usersData = usersResult.status === 'fulfilled' ? usersResult.value : { pagination: { total: 0 } };
+
       setStats({
-        totalMovies: moviesData.movies?.length || moviesData.length || 0,
-        totalCategories: categoriesData.categories?.length || categoriesData.length || 0,
-        totalUsers: usersData.users?.length || 0,
+        totalMovies: moviesData.pagination?.total || 0,
+        totalCategories: categoriesData.pagination?.total || 0,
+        totalUsers: usersData.pagination?.total || 0,
       });
     } catch (error) {
       console.error('Erreur lors du chargement des statistiques:', error);

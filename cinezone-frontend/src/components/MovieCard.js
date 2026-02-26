@@ -104,7 +104,7 @@ const MovieCard = ({ movie }) => {
 
           {/* Overlay avec boutons */}
           <div
-            className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100"
+            className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center"
             aria-hidden="true"
           >
             <button
@@ -137,16 +137,16 @@ const MovieCard = ({ movie }) => {
       </div>
 
       {/* Informations du film */}
-      <div className="p-4">
-        <h3 className="font-semibold text-lg mb-1 truncate" title={movie.title}>
+      <div className="p-3 transition-transform duration-300 group-hover:-translate-y-0.5">
+        <h3 className="font-semibold text-sm leading-snug mb-1 truncate text-white" title={movie.title}>
           {movie.title}
         </h3>
 
-        <div className="flex items-center justify-between text-sm text-gray-400">
+        <div className="flex items-center justify-between text-xs text-gray-400">
           <time dateTime={movie.releaseYear}>{movie.releaseYear || 'N/A'}</time>
           {movie.rating && (
             <div className="flex items-center" aria-label={`Note: ${movie.rating.toFixed(1)} sur 10`}>
-              <svg className="w-4 h-4 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+              <svg className="w-3 h-3 text-yellow-400 mr-0.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
               </svg>
               <span>{movie.rating.toFixed(1)}</span>
@@ -156,12 +156,12 @@ const MovieCard = ({ movie }) => {
 
         {/* Catégories */}
         {movie.categoryIds && movie.categoryIds.length > 0 && (
-          <div className="flex flex-wrap gap-1 mt-2" role="list" aria-label="Catégories">
+          <div className="flex flex-wrap gap-1 mt-1.5" role="list" aria-label="Catégories">
             {movie.categoryIds.slice(0, 2).map((category, index) => (
               <span
                 key={index}
                 role="listitem"
-                className="text-xs bg-gray-700 text-cyan-400 px-2 py-1 rounded"
+                className="text-xs bg-gray-700/80 text-cyan-400 px-1.5 py-0.5 rounded-md"
               >
                 {category.name || category}
               </span>

@@ -4,6 +4,7 @@ import { WatchlistProvider } from './context/WatchlistContext';
 import { HistoryProvider } from './context/HistoryContext';
 import { NotesProvider } from './context/NotesContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { ToastProvider } from './context/ToastContext';
 import MainLayout from './layouts/MainLayout';
 
 // Pages
@@ -25,21 +26,24 @@ import AdminCategoriesNew from './pages/admin/CategoriesNew';
 import AdminCategoriesEdit from './pages/admin/CategoriesEdit';
 import AdminUsers from './pages/admin/Users';
 import AdminRoute from './components/AdminRoute';
+import MentionsLegales from './pages/MentionsLegales';
 
 function App() {
   return (
     <ThemeProvider>
-      <AuthProvider>
-        <WatchlistProvider>
-          <HistoryProvider>
-            <NotesProvider>
-              <Router>
+      <ToastProvider>
+        <AuthProvider>
+          <WatchlistProvider>
+            <HistoryProvider>
+              <NotesProvider>
+                <Router>
                 <Routes>
 
           {/* Pages publiques */}
           <Route path="/" element={<MainLayout><Home /></MainLayout>} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/mentions-legales" element={<MainLayout><MentionsLegales /></MainLayout>} />
 
           {/* Pages principales */}
           <Route
@@ -201,13 +205,14 @@ function App() {
             }
           />
 
-          </Routes>
-                </Router>
-              </NotesProvider>
-            </HistoryProvider>
-          </WatchlistProvider>
-        </AuthProvider>
-    </ThemeProvider>
+            </Routes>
+                  </Router>
+                </NotesProvider>
+              </HistoryProvider>
+            </WatchlistProvider>
+          </AuthProvider>
+        </ToastProvider>
+      </ThemeProvider>
   );
 }
 

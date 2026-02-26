@@ -20,7 +20,7 @@ const AdminUsers = () => {
 
   const fetchUsers = async () => {
     try {
-      const data = await admin.getAllUsers();
+      const data = await admin.getAllUsers({ limit: 500 });
       setUsers(data.users || []);
     } catch (err) {
       setError('Erreur lors du chargement des utilisateurs');
@@ -42,8 +42,9 @@ const AdminUsers = () => {
   };
 
   const filteredUsers = users.filter(user => {
+    const fullName = `${user.firstName || ''} ${user.lastName || ''}`.trim();
     const matchesSearch =
-      user.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       user.email?.toLowerCase().includes(searchQuery.toLowerCase());
 
     const matchesRole = filterRole === 'all' || user.role === filterRole;
@@ -132,10 +133,10 @@ const AdminUsers = () => {
                         <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-white mr-3 ${
                           user.role === 'admin' ? 'bg-purple-500' : 'bg-green-500'
                         }`}>
-                          {user.name?.charAt(0).toUpperCase() || 'U'}
+                          {user.firstName?.charAt(0).toUpperCase() || user.lastName?.charAt(0).toUpperCase() || 'U'}
                         </div>
                         <div className={`font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                          {user.name || 'Sans nom'}
+                          {`${user.firstName || ''} ${user.lastName || ''}`.trim() || 'Sans nom'}
                         </div>
                       </div>
                     </td>

@@ -36,7 +36,7 @@ export const HistoryProvider = ({ children }) => {
     try {
       setLoading(true);
       setError(null);
-      const data = await historyApi.get();
+      const data = await historyApi.get({ limit: 500 });
       setHistory(data.history || []);
     } catch (err) {
       setError('Erreur lors du chargement de l\'historique');
