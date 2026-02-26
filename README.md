@@ -24,27 +24,27 @@
 ## 🛠️ Technologies
 
 ### Frontend
-| Technologie | Version | Description |
-|-------------|---------|-------------|
-| React | 19.2 | Bibliothèque UI |
-| React Router | 7.9 | Routing SPA |
-| Tailwind CSS | 3.4 | Framework CSS |
-| Axios | 1.13 | Client HTTP |
-| Cypress | 15.7 | Tests E2E |
-| Jest | 27.5 | Tests unitaires |
+| Technologie | Description |
+|-------------|-------------|
+| React | Bibliothèque UI |
+| React Router | Routing SPA |
+| Tailwind CSS | Framework CSS |
+| Axios | Client HTTP |
+| Cypress | Tests E2E |
+| Jest | Tests unitaires |
 
 ### Backend
-| Technologie | Version | Description |
-|-------------|---------|-------------|
-| Node.js | 20.x | Runtime JavaScript |
-| Express | 5.2 | Framework web |
-| Sequelize | 6.37 | ORM |
-| MariaDB | 10.11 | Base de données |
-| JWT | 9.0 | Authentification |
-| Multer | 2.0 | Upload fichiers |
-| Express-Validator | 7.3 | Validation des entrées |
-| Helmet | 8.1 | Sécurité HTTP |
-| Jest | 30.2 | Tests unitaires |
+| Technologie | Description |
+|-------------|-------------|
+| Node.js | Runtime JavaScript |
+| Express | Framework web |
+| Sequelize | ORM |
+| MariaDB | Base de données |
+| JWT | Authentification |
+| Multer | Upload fichiers |
+| Express-Validator | Validation des entrées |
+| Helmet | Sécurité HTTP |
+| Jest | Tests unitaires |
 
 ### DevOps
 | Technologie | Description |
