@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { movies, categories } from '../utils/api';
 import { useTheme } from '../context/ThemeContext';
@@ -6,6 +6,87 @@ import MovieCard from '../components/MovieCard';
 import SearchBar from '../components/SearchBar';
 import Loading from '../components/Loading';
 import Pagination from '../components/Pagination';
+
+const ChevronIcon = ({ direction }) => (
+  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5}
+      d={direction === 'left' ? 'M15 19l-7-7 7-7' : 'M9 5l7 7-7 7'} />
+  </svg>
+);
+
+const CategoryRow = ({ categoryData, theme }) => {
+  const rowRef = useRef(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const updateScrollState = () => {
+    const el = rowRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 10);
+    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 10);
+  };
+
+  const scroll = (dir) => {
+    rowRef.current?.scrollBy({ left: dir * 480, behavior: 'smooth' });
+    setTimeout(updateScrollState, 350);
+  };
+
+  return (
+    <div className="mb-10 group/row">
+      <div className="px-4 sm:px-6 lg:px-8 mb-3 flex items-center gap-3">
+        <h2 className={`text-xl font-bold tracking-wide ${
+          theme === 'dark' ? 'text-white' : 'text-gray-900'
+        }`}>
+          {categoryData.name}
+        </h2>
+        <div className={`h-px flex-1 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-200'}`} />
+      </div>
+
+      <div className="relative">
+        {/* Flèche gauche */}
+        {canScrollLeft && (
+          <button
+            onClick={() => scroll(-1)}
+            className="absolute left-0 top-0 bottom-0 z-20 w-14 flex items-center justify-center
+              bg-gradient-to-r from-gray-900/90 to-transparent
+              text-white opacity-0 group-hover/row:opacity-100
+              transition-opacity duration-200 hover:from-gray-900"
+            aria-label="Défiler à gauche"
+          >
+            <ChevronIcon direction="left" />
+          </button>
+        )}
+
+        {/* Rangée scrollable */}
+        <div
+          ref={rowRef}
+          onScroll={updateScrollState}
+          className="flex gap-3 overflow-x-auto scrollbar-hide pb-2 px-4 sm:px-6 lg:px-8 snap-x w-full"
+        >
+          {categoryData.movies.map((movie) => (
+            <div key={movie.id} className="flex-none w-44 snap-start">
+              <MovieCard movie={movie} />
+            </div>
+          ))}
+        </div>
+
+        {/* Flèche droite */}
+        {canScrollRight && categoryData.movies.length > 5 && (
+          <button
+            onClick={() => scroll(1)}
+            className="absolute right-0 top-0 bottom-0 z-20 w-14 flex items-center justify-center
+              bg-gradient-to-l from-gray-900/90 to-transparent
+              text-white opacity-0 group-hover/row:opacity-100
+              transition-opacity duration-200 hover:from-gray-900"
+            aria-label="Défiler à droite"
+          >
+            <ChevronIcon direction="right" />
+          </button>
+        )}
+      </div>
+    </div>
+  );
+};
 
 const Catalog = () => {
   const { theme } = useTheme();
@@ -263,7 +344,7 @@ const Catalog = () => {
 
       {/* Message d'erreur */}
       {error && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+        <div className="px-4 sm:px-6 lg:px-8 mt-6">
           <div className="bg-red-500 bg-opacity-10 border border-red-500 text-red-500 px-4 py-3 rounded-lg">
             {error}
           </div>
@@ -272,7 +353,7 @@ const Catalog = () => {
 
       {/* Résultats de recherche */}
       {searchResults ? (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex items-center justify-between mb-6">
             <h2 className={`text-2xl font-bold ${
               theme === 'dark' ? 'text-white' : 'text-gray-900'
@@ -295,7 +376,7 @@ const Catalog = () => {
 
           {searchResults.length > 0 ? (
             <>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8 gap-4">
                 {searchResults.map((movie) => (
                   <MovieCard
                     key={movie.id}
@@ -327,33 +408,7 @@ const Catalog = () => {
         // Liste des films par catégorie (style Netflix)
         <div className="pb-12">
           {moviesByCategory.map((categoryData) => (
-            <div key={categoryData.id} className="mb-8">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 className={`text-2xl font-bold mb-4 ${
-                  theme === 'dark' ? 'text-white' : 'text-gray-900'
-                }`}>
-                  {categoryData.name}
-                </h2>
-              </div>
-
-              {/* Rangée horizontale scrollable */}
-              <div className="relative">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                  <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory">
-                    {categoryData.movies.map((movie) => (
-                      <div
-                        key={movie.id}
-                        className="flex-none w-48 snap-start"
-                      >
-                        <MovieCard
-                          movie={movie}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
+            <CategoryRow key={categoryData.id} categoryData={categoryData} theme={theme} />
           ))}
 
           {moviesByCategory.length === 0 && (
@@ -367,16 +422,6 @@ const Catalog = () => {
           )}
         </div>
       )}
-
-      <style jsx>{`
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
     </div>
   );
 };

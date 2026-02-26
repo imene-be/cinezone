@@ -26,6 +26,7 @@ import AdminCategoriesNew from './pages/admin/CategoriesNew';
 import AdminCategoriesEdit from './pages/admin/CategoriesEdit';
 import AdminUsers from './pages/admin/Users';
 import AdminRoute from './components/AdminRoute';
+import MentionsLegales from './pages/MentionsLegales';
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
           <Route path="/" element={<MainLayout><Home /></MainLayout>} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/mentions-legales" element={<MainLayout><MentionsLegales /></MainLayout>} />
 
           {/* Pages principales */}
           <Route
