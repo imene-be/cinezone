@@ -38,7 +38,6 @@ const MoviesEdit = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  // Charger le poster actuel via Axios
   useEffect(() => {
     const loadPoster = async () => {
       if (!currentPoster) {
@@ -46,16 +45,14 @@ const MoviesEdit = () => {
         return;
       }
 
-      // URL externe (TMDB)
       if (currentPoster.startsWith('http')) {
         setPosterSrc(currentPoster);
         return;
       }
 
-      // Image locale via Axios
       try {
         let baseUrl = process.env.REACT_APP_BASE_URL || 'http://localhost:8000';
-        // Si `REACT_APP_BASE_URL` contient "/api", retirer la partie "/api" pour accéder aux fichiers statiques
+
         if (baseUrl.endsWith('/api')) baseUrl = baseUrl.replace(/\/api\/?$/, '');
         const response = await axios.get(`${baseUrl}${currentPoster}`, {
           responseType: 'blob'
@@ -74,6 +71,7 @@ const MoviesEdit = () => {
         URL.revokeObjectURL(posterSrc);
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPoster]);
 
   const loadData = async () => {
@@ -131,7 +129,7 @@ const MoviesEdit = () => {
   };
 
   const handleTmdbSelect = async (tmdbData) => {
-    // Remplir uniquement les champs vides
+
     setFormData(prev => {
       const newData = { ...prev };
 
@@ -144,7 +142,6 @@ const MoviesEdit = () => {
       return newData;
     });
 
-    // Afficher le preview du poster TMDB et stocker l'URL
     if (tmdbData.poster && !posterFile) {
       setFormData(prev => ({
         ...prev,
@@ -153,7 +150,6 @@ const MoviesEdit = () => {
       setPosterPreview(tmdbData.poster);
     }
 
-    // Mapper les genres TMDB avec les catégories
     if (tmdbData.tmdbGenres && tmdbData.tmdbGenres.length > 0) {
       const genreMapping = {
         28: 'Action', 12: 'Aventure', 16: 'Animation', 35: 'Comédie',
@@ -167,7 +163,6 @@ const MoviesEdit = () => {
         typeof g === 'object' ? g.name : genreMapping[g]
       ).filter(Boolean);
 
-      // Trouver les catégories correspondantes
       const matchingCategoryIds = categories
         .filter(cat => tmdbGenreNames.some(genreName =>
           cat.name.toLowerCase().includes(genreName.toLowerCase()) ||
@@ -209,7 +204,7 @@ const MoviesEdit = () => {
       if (formData.categoryIds.length > 0) {
         fd.append('categories', JSON.stringify(formData.categoryIds));
       }
-      // Si un fichier est uploadé, l'utiliser. Sinon, utiliser l'URL TMDB si disponible
+
       if (posterFile) {
         fd.append('poster', posterFile);
       } else if (formData.posterUrl && typeof formData.posterUrl === 'string') {
@@ -238,23 +233,21 @@ const MoviesEdit = () => {
           subtitle="Modifiez les informations du film"
         />
 
-        {/* Form */}
         <div className={`rounded-lg p-6 shadow-lg ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Error Message */}
+
             {error && (
               <div className="bg-red-500 bg-opacity-10 border border-red-500 text-red-500 px-4 py-3 rounded-lg">
                 {error}
               </div>
             )}
 
-            {/* TMDB Search */}
             <TmdbSearch onSelectMovie={handleTmdbSelect} currentFormData={formData} />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Left Column */}
+
               <div className="space-y-6">
-                {/* Title */}
+
                 <Input
                   label="Titre"
                   name="title"
@@ -264,7 +257,6 @@ const MoviesEdit = () => {
                   required
                 />
 
-                {/* Release Date */}
                 <div>
                   <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                     Date de sortie
@@ -282,7 +274,6 @@ const MoviesEdit = () => {
                   />
                 </div>
 
-                {/* Duration */}
                 <Input
                   label="Durée (en minutes)"
                   name="duration"
@@ -293,7 +284,6 @@ const MoviesEdit = () => {
                   min="1"
                 />
 
-                {/* Trailer URL */}
                 <Input
                   label="URL de la bande-annonce"
                   name="trailer"
@@ -302,7 +292,6 @@ const MoviesEdit = () => {
                   placeholder="https://youtube.com/..."
                 />
 
-                {/* Status */}
                 <div>
                   <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                     Statut
@@ -324,9 +313,8 @@ const MoviesEdit = () => {
                 </div>
               </div>
 
-              {/* Right Column */}
               <div className="space-y-6">
-                {/* Poster Upload */}
+
                 <div>
                   <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                     Affiche (poster)
@@ -357,7 +345,6 @@ const MoviesEdit = () => {
                   )}
                 </div>
 
-                {/* Categories */}
                 <div>
                   <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                     Catégories
@@ -381,7 +368,6 @@ const MoviesEdit = () => {
               </div>
             </div>
 
-            {/* Description - Full Width */}
             <div>
               <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                 Description
@@ -400,7 +386,6 @@ const MoviesEdit = () => {
               />
             </div>
 
-            {/* Buttons */}
             <div className="flex justify-end space-x-4 pt-4 border-t border-gray-700">
               <button
                 type="button"
@@ -420,7 +405,6 @@ const MoviesEdit = () => {
           </form>
         </div>
 
-        {/* Confirmation Dialog */}
         <ConfirmDialog
           isOpen={showConfirm}
           onClose={() => setShowConfirm(false)}

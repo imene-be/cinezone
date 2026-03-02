@@ -37,13 +37,13 @@ const CategoryRow = ({ categoryData, theme }) => {
         <h2 className={`text-xl font-bold tracking-wide ${
           theme === 'dark' ? 'text-white' : 'text-gray-900'
         }`}>
-          {categoryData.name}
+          {categoryData.name.toUpperCase()}
         </h2>
         <div className={`h-px flex-1 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-200'}`} />
       </div>
 
       <div className="relative">
-        {/* Flèche gauche */}
+
         {canScrollLeft && (
           <button
             onClick={() => scroll(-1)}
@@ -57,20 +57,18 @@ const CategoryRow = ({ categoryData, theme }) => {
           </button>
         )}
 
-        {/* Rangée scrollable */}
         <div
           ref={rowRef}
           onScroll={updateScrollState}
           className="flex gap-3 overflow-x-auto scrollbar-hide pb-2 px-4 sm:px-6 lg:px-8 snap-x w-full"
         >
-          {categoryData.movies.map((movie) => (
+          {categoryData.movies.map((movie, i) => (
             <div key={movie.id} className="flex-none w-44 snap-start">
-              <MovieCard movie={movie} />
+              <MovieCard movie={movie} index={i} />
             </div>
           ))}
         </div>
 
-        {/* Flèche droite */}
         {canScrollRight && categoryData.movies.length > 5 && (
           <button
             onClick={() => scroll(1)}
@@ -92,15 +90,13 @@ const Catalog = () => {
   const { theme } = useTheme();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // Fonction pour charger les filtres depuis localStorage et URL
   const loadInitialFilters = () => {
-    // 1. Essayer de récupérer depuis l'URL (priorité)
+
     const urlCategory = searchParams.get('category');
     const urlMinRating = searchParams.get('minRating');
     const urlSort = searchParams.get('sort');
     const urlSearch = searchParams.get('q');
 
-    // 2. Sinon, essayer localStorage
     const savedFilters = localStorage.getItem('catalogFilters');
     const localFilters = savedFilters ? JSON.parse(savedFilters) : {};
 
@@ -132,7 +128,6 @@ const Catalog = () => {
     loadMoviesData();
   }, []);
 
-  // Synchroniser les filtres avec l'URL et localStorage
   useEffect(() => {
     const params = {};
 
@@ -141,10 +136,8 @@ const Catalog = () => {
     if (filters.minRating) params.minRating = filters.minRating;
     if (filters.sort && filters.sort !== 'recent') params.sort = filters.sort;
 
-    // Mettre à jour l'URL
     setSearchParams(params, { replace: true });
 
-    // Sauvegarder dans localStorage
     localStorage.setItem('catalogFilters', JSON.stringify({
       category: filters.category,
       minRating: filters.minRating,
@@ -152,11 +145,11 @@ const Catalog = () => {
     }));
   }, [filters, searchQuery, setSearchParams]);
 
-  // Appliquer les filtres initiaux au chargement
   useEffect(() => {
     if (allMovies.length > 0 && (initialFilters.search || initialFilters.category || initialFilters.minRating)) {
       handleSearch(initialFilters.search, filters);
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allMovies.length]);
 
@@ -171,11 +164,9 @@ const Catalog = () => {
       const moviesList = moviesData.movies || moviesData;
       const categoriesList = categoriesData.categories || categoriesData;
 
-      // Sauvegarder toutes les données
       setAllMovies(moviesList);
       setAllCategories(categoriesList);
 
-      // Organiser les films par catégorie (uniquement les catégories non vides)
       const assignedMovieIds = new Set();
       let moviesByCat = [];
       categoriesList.forEach(element => {
@@ -188,7 +179,6 @@ const Catalog = () => {
         }
       });
 
-      // Films sans catégorie → section "Tous les films"
       const uncategorized = moviesList.filter(m => !assignedMovieIds.has(m.id));
       if (uncategorized.length > 0) {
         moviesByCat.push({ id: 0, name: 'Tous les films', slug: '_all', movies: uncategorized });
@@ -213,7 +203,7 @@ const Catalog = () => {
     }
 
     try {
-      // Construire les paramètres de requête
+
       const params = {
         page,
         limit: 12,
@@ -221,11 +211,9 @@ const Catalog = () => {
         minRating: currentFilters?.minRating || undefined,
       };
 
-      // Appel API avec pagination
       const data = await movies.search(query || '', params);
       let results = data.movies || data;
 
-      // Appliquer les filtres côté client pour category et tri
       results = applyFilters(results, currentFilters || filters);
 
       setSearchResults(results);
@@ -244,27 +232,24 @@ const Catalog = () => {
 
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
-    // Réappliquer la recherche avec les nouveaux filtres
+
     handleSearch(searchQuery, newFilters);
   };
 
   const applyFilters = (moviesList, currentFilters) => {
     let filtered = [...moviesList];
 
-    // Filtre par catégorie
     if (currentFilters.category) {
       filtered = filtered.filter((movie) =>
         movie.categories?.some((cat) => cat.id === parseInt(currentFilters.category))
       );
     }
 
-    // Filtre par note minimum
     if (currentFilters.minRating) {
       const minRating = parseFloat(currentFilters.minRating);
       filtered = filtered.filter((movie) => movie.averageRating >= minRating);
     }
 
-    // Tri
     if (currentFilters.sort === 'recent') {
       filtered.sort((a, b) => new Date(b.createdAt || b.releaseDate) - new Date(a.createdAt || a.releaseDate));
     } else if (currentFilters.sort === 'oldest') {
@@ -282,36 +267,34 @@ const Catalog = () => {
     return filtered;
   };
 
-
   if (loading) {
     return <Loading fullScreen text="Chargement..." />;
   }
 
-  // Affiches de films populaires pour le background (TMDB)
   const moviePosters = [
-    'https://image.tmdb.org/t/p/w300/qJ2tW6WMUDux911r6m7haRef0WH.jpg', // Dune 2
-    'https://image.tmdb.org/t/p/w300/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg', // Oppenheimer
-    'https://image.tmdb.org/t/p/w300/vZloFAK7NmvMGKE7VkF5UHaz0I.jpg', // John Wick 4
-    'https://image.tmdb.org/t/p/w300/ngl2FKBlU4fhbdsrtdom9LVLBXw.jpg', // Avatar 2
-    'https://image.tmdb.org/t/p/w300/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg', // Avatar
-    'https://image.tmdb.org/t/p/w300/d5NXSklXo0qyIYkgV94XAgMIckC.jpg', // Dune
-    'https://image.tmdb.org/t/p/w300/pIkRyD18kl4FhoCNQuWxWu5cBLM.jpg', // Interstellar
-    'https://image.tmdb.org/t/p/w300/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg', // Joker
-    'https://image.tmdb.org/t/p/w300/rCzpDGLbOoPwLjy3OAm5NUPOTrC.jpg', // The Dark Knight
-    'https://image.tmdb.org/t/p/w300/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg', // Inception
-    'https://image.tmdb.org/t/p/w300/or06FN3Dka5tukK1e9sl16pB3iy.jpg', // Avengers Endgame
-    'https://image.tmdb.org/t/p/w300/arw2vcBveWOVZr6pxd9XTd1TdQa.jpg', // Parasite
-    'https://image.tmdb.org/t/p/w300/sv1xJUazXeYqALzczSZ3O6nkH75.jpg', // Fight Club
-    'https://image.tmdb.org/t/p/w300/velWPhVMQeQKcxggNEU8YmIo52R.jpg', // Everything Everywhere
-    'https://image.tmdb.org/t/p/w300/62HCnUTziyWcpDaBO2i1DX17ljH.jpg', // Spirited Away
-    'https://image.tmdb.org/t/p/w300/6CoRTJTmijhBLJTUNoVSUNxZMEI.jpg', // Forrest Gump
+    'https://image.tmdb.org/t/p/w300/qJ2tW6WMUDux911r6m7haRef0WH.jpg',
+    'https://image.tmdb.org/t/p/w300/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg',
+    'https://image.tmdb.org/t/p/w300/vZloFAK7NmvMGKE7VkF5UHaz0I.jpg',
+    'https://image.tmdb.org/t/p/w300/ngl2FKBlU4fhbdsrtdom9LVLBXw.jpg',
+    'https://image.tmdb.org/t/p/w300/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg',
+    'https://image.tmdb.org/t/p/w300/d5NXSklXo0qyIYkgV94XAgMIckC.jpg',
+    'https://image.tmdb.org/t/p/w300/pIkRyD18kl4FhoCNQuWxWu5cBLM.jpg',
+    'https://image.tmdb.org/t/p/w300/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg',
+    'https://image.tmdb.org/t/p/w300/rCzpDGLbOoPwLjy3OAm5NUPOTrC.jpg',
+    'https://image.tmdb.org/t/p/w300/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg',
+    'https://image.tmdb.org/t/p/w300/or06FN3Dka5tukK1e9sl16pB3iy.jpg',
+    'https://image.tmdb.org/t/p/w300/arw2vcBveWOVZr6pxd9XTd1TdQa.jpg',
+    'https://image.tmdb.org/t/p/w300/sv1xJUazXeYqALzczSZ3O6nkH75.jpg',
+    'https://image.tmdb.org/t/p/w300/velWPhVMQeQKcxggNEU8YmIo52R.jpg',
+    'https://image.tmdb.org/t/p/w300/62HCnUTziyWcpDaBO2i1DX17ljH.jpg',
+    'https://image.tmdb.org/t/p/w300/6CoRTJTmijhBLJTUNoVSUNxZMEI.jpg',
   ];
 
   return (
     <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'}`}>
-      {/* Section Hero avec recherche et grille de posters */}
+
       <div className="relative h-[60vh] overflow-hidden">
-        {/* Grille de posters en arrière-plan */}
+
         <div className="absolute inset-0 grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-1 opacity-30">
           {[...moviePosters, ...moviePosters, ...moviePosters].map((poster, index) => (
             <div
@@ -322,18 +305,14 @@ const Catalog = () => {
           ))}
         </div>
 
-        {/* Overlay gradient */}
-        <div className={`absolute inset-0 ${
+        <div className={`absolute inset-0 bg-gradient-to-b ${
           theme === 'dark'
-            ? 'bg-gradient-to-b from-gray-900/70 via-gray-900/80 to-gray-900'
-            : 'bg-gradient-to-b from-gray-100/70 via-gray-100/80 to-gray-100'
+            ? 'from-transparent from-50% to-gray-900'
+            : 'from-transparent from-50% to-gray-100'
         }`} />
 
-        {/* Contenu */}
         <div className="relative z-10 h-full flex flex-col items-center justify-center px-4">
-          <h1 className={`text-5xl md:text-6xl font-bold mb-8 text-center drop-shadow-lg ${
-            theme === 'dark' ? 'text-white' : 'text-gray-900'
-          }`}>
+          <h1 className="text-5xl md:text-6xl font-bold mb-8 text-center text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]">
             Des milliers de films à découvrir
           </h1>
           <div className="w-full max-w-5xl">
@@ -348,7 +327,6 @@ const Catalog = () => {
         </div>
       </div>
 
-      {/* Message d'erreur */}
       {error && (
         <div className="px-4 sm:px-6 lg:px-8 mt-6">
           <div className="bg-red-500 bg-opacity-10 border border-red-500 text-red-500 px-4 py-3 rounded-lg">
@@ -357,7 +335,6 @@ const Catalog = () => {
         </div>
       )}
 
-      {/* Résultats de recherche */}
       {searchResults ? (
         <div className="px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex items-center justify-between mb-6">
@@ -383,14 +360,15 @@ const Catalog = () => {
           {searchResults.length > 0 ? (
             <>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8 gap-4">
-                {searchResults.map((movie) => (
+                {searchResults.map((movie, i) => (
                   <MovieCard
                     key={movie.id}
                     movie={movie}
+                    index={i}
                   />
                 ))}
               </div>
-              {/* Pagination */}
+
               <Pagination
                 currentPage={pagination.page}
                 totalPages={pagination.totalPages}
@@ -411,7 +389,7 @@ const Catalog = () => {
           )}
         </div>
       ) : (
-        // Liste des films par catégorie (style Netflix)
+
         <div className="pb-12">
           {moviesByCategory.map((categoryData) => (
             <CategoryRow key={categoryData.id} categoryData={categoryData} theme={theme} />

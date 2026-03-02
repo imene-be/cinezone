@@ -8,7 +8,6 @@ import AdminHeader from '../../components/AdminHeader';
 import ConfirmDialog from '../../components/ConfirmDialog';
 import axios from 'axios';
 
-// Component pour charger le poster via Axios blob
 const MoviePoster = ({ poster, title }) => {
   const [imageSrc, setImageSrc] = useState(null);
   const [imageError, setImageError] = useState(false);
@@ -20,16 +19,14 @@ const MoviePoster = ({ poster, title }) => {
         return;
       }
 
-      // Si c'est une URL externe (TMDB), utiliser directement
       if (poster.startsWith('http')) {
         setImageSrc(poster);
         return;
       }
 
-      // Sinon, charger depuis le backend via Axios
       try {
         let baseUrl = process.env.REACT_APP_BASE_URL || 'http://localhost:8000';
-        // Si `REACT_APP_BASE_URL` contient "/api", retirer cette partie pour accéder aux fichiers statiques
+
         if (baseUrl.endsWith('/api')) baseUrl = baseUrl.replace(/\/api\/?$/, '');
         const response = await axios.get(`${baseUrl}${poster}`, {
           responseType: 'blob'
@@ -44,7 +41,6 @@ const MoviePoster = ({ poster, title }) => {
 
     loadImage();
 
-    // Cleanup: libérer l'URL blob quand le composant se démonte
     return () => {
       if (imageSrc && imageSrc.startsWith('blob:')) {
         URL.revokeObjectURL(imageSrc);
@@ -124,7 +120,6 @@ const AdminMovies = () => {
           subtitle={`${filteredMovies.length} film${filteredMovies.length > 1 ? 's' : ''} au total`}
         />
 
-        {/* Action Button */}
         <div className="flex justify-end mb-6">
           <Link to="/admin/movies/new">
             <Button variant="primary" size="lg">
@@ -136,7 +131,6 @@ const AdminMovies = () => {
           </Link>
         </div>
 
-        {/* Search Bar */}
         <div className="mb-6">
           <input
             type="text"
@@ -151,14 +145,12 @@ const AdminMovies = () => {
           />
         </div>
 
-        {/* Error Message */}
         {error && (
           <div className="bg-red-500 bg-opacity-10 border border-red-500 text-red-500 px-4 py-3 rounded-lg mb-6">
             {error}
           </div>
         )}
 
-        {/* Empty State */}
         {filteredMovies.length === 0 && !loading && (
           <div className={`text-center py-12 rounded-lg ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
             <svg className="w-16 h-16 mx-auto mb-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
@@ -173,7 +165,6 @@ const AdminMovies = () => {
           </div>
         )}
 
-        {/* Movies Table */}
         {filteredMovies.length > 0 && (
           <div className={`rounded-lg shadow-lg overflow-hidden ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
             <div className="overflow-x-auto">
@@ -287,7 +278,6 @@ const AdminMovies = () => {
         </div>
         )}
 
-        {/* Delete Confirmation Dialog */}
         <ConfirmDialog
           isOpen={deleteConfirm !== null}
           onClose={() => setDeleteConfirm(null)}

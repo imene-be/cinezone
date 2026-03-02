@@ -20,13 +20,10 @@ const MovieDetail = () => {
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [isPlaying, setIsPlaying] = useState(false);
   const [posterSrc, setPosterSrc] = useState(null);
 
-  // Utiliser le contexte pour obtenir la note - PERMANENTE!
   const userNote = getNoteForMovie(parseInt(id, 10));
 
-  // États du formulaire uniquement
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [showRatingForm, setShowRatingForm] = useState(false);
@@ -46,7 +43,6 @@ const MovieDetail = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  // Charger le poster via Axios
   useEffect(() => {
     const loadPoster = async () => {
       if (!movie?.poster) {
@@ -54,13 +50,11 @@ const MovieDetail = () => {
         return;
       }
 
-      // URL externe (TMDB)
       if (movie.poster.startsWith('http')) {
         setPosterSrc(movie.poster);
         return;
       }
 
-      // Image locale via Axios
       try {
         let baseUrl = process.env.REACT_APP_BASE_URL || 'http://localhost:8000';
         if (baseUrl.endsWith('/api')) baseUrl = baseUrl.replace(/\/api\/?$/, '');
@@ -81,9 +75,9 @@ const MovieDetail = () => {
         URL.revokeObjectURL(posterSrc);
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [movie]);
 
-  // Synchroniser le formulaire avec la note du contexte
   useEffect(() => {
     if (userNote) {
       setRating(Number(userNote.rating));
@@ -129,20 +123,16 @@ const MovieDetail = () => {
     }
 
     try {
-      // Utiliser le contexte - la note sera PERMANENTE!
+
       const result = await createOrUpdateNote(parseInt(id, 10), rating, comment);
 
       if (result.success) {
-        console.log('Note enregistrée avec succès dans la base de données');
 
-        // Fermer le formulaire
         setShowRatingForm(false);
 
-        // Recharger les détails du film pour mettre à jour la note moyenne
         const data = await movies.getById(id);
         setMovie(data.movie || data);
 
-        // Pas besoin de setUserNote - le contexte se met à jour automatiquement!
       } else {
         console.error('Erreur:', result.error);
         alert('Erreur lors de l\'enregistrement de votre note. Veuillez réessayer.');
@@ -162,13 +152,10 @@ const MovieDetail = () => {
       const result = await deleteNote(userNote.id);
 
       if (result.success) {
-        console.log('Note supprimée avec succès');
 
-        // Recharger les détails du film pour mettre à jour la note moyenne
         const data = await movies.getById(id);
         setMovie(data.movie || data);
 
-        // Réinitialiser le formulaire
         setRating(0);
         setComment('');
       } else {
@@ -178,14 +165,6 @@ const MovieDetail = () => {
       console.error('Erreur lors de la suppression:', err);
       alert('Erreur lors de la suppression de votre note.');
     }
-  };
-
-  const handlePlay = () => {
-    if (!isAuthenticated) {
-      navigate('/login');
-      return;
-    }
-    setIsPlaying(true);
   };
 
   if (loading) {
@@ -207,9 +186,9 @@ const MovieDetail = () => {
 
   return (
     <div className="min-h-screen bg-gray-900">
-      {/* Hero Section avec image de fond */}
+
       <div className="relative h-[70vh] overflow-hidden">
-        {/* Image de fond avec overlay */}
+
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
@@ -222,9 +201,8 @@ const MovieDetail = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/70 to-transparent"></div>
         </div>
 
-        {/* Contenu Hero */}
-        <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-end pb-16">
-          <div className="max-w-3xl">
+        <div className="relative h-full w-full px-4 sm:px-6 lg:px-8 flex items-end pb-16">
+          <div className="w-full">
             <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
               {movie.title}
             </h1>
@@ -250,7 +228,6 @@ const MovieDetail = () => {
               )}
             </div>
 
-            {/* Catégories */}
             {movie.categoryIds && movie.categoryIds.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-6">
                 {movie.categoryIds.map((category, index) => (
@@ -293,47 +270,11 @@ const MovieDetail = () => {
         </div>
       </div>
 
-      {/* Lecteur vidéo */}
-      {isPlaying && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="bg-black rounded-lg overflow-hidden aspect-video">
-            {movie.videoUrl ? (
-              <video
-                className="w-full h-full"
-                controls
-                autoPlay
-                src={movie.videoUrl}
-              >
-                Votre navigateur ne supporte pas la lecture vidéo.
-              </video>
-            ) : (
-              <div className="w-full h-full flex items-center justify-center text-white">
-                <div className="text-center">
-                  <svg
-                    className="w-24 h-24 mx-auto mb-4 text-gray-600"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  <p className="text-xl">Vidéo non disponible</p>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Détails du film */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Colonne principale */}
+
           <div className="lg:col-span-2 space-y-8">
-            {/* Synopsis */}
+
             <div>
               <h2 className="text-2xl font-bold text-white mb-4">Synopsis</h2>
               <p className="text-gray-300 leading-relaxed">
@@ -341,7 +282,6 @@ const MovieDetail = () => {
               </p>
             </div>
 
-            {/* Section Notes et Commentaires */}
             <div>
               <h2 className="text-2xl font-bold text-white mb-4">
                 Notes et Commentaires
@@ -410,7 +350,6 @@ const MovieDetail = () => {
                     </Button>
                   )}
 
-                  {/* Formulaire de notation */}
                   {showRatingForm && (
                     <div className="bg-gray-800 rounded-lg p-6 mb-4">
                       <form onSubmit={handleSubmitRating}>
@@ -488,9 +427,8 @@ const MovieDetail = () => {
             </div>
           </div>
 
-          {/* Sidebar */}
           <div className="space-y-6">
-            {/* Informations */}
+
             <div className="bg-gray-800 rounded-lg p-6">
               <h3 className="text-lg font-semibold text-white mb-4">
                 Informations
@@ -515,7 +453,6 @@ const MovieDetail = () => {
               </div>
             </div>
 
-            {/* Catégories */}
             {movie.categoryIds && movie.categoryIds.length > 0 && (
               <div className="bg-gray-800 rounded-lg p-6">
                 <h3 className="text-lg font-semibold text-white mb-4">
@@ -537,7 +474,6 @@ const MovieDetail = () => {
         </div>
       </div>
 
-      {/* Films similaires */}
       <SimilarMovies movieTitle={movie.title} movieCategories={movie.categoryIds} />
     </div>
   );

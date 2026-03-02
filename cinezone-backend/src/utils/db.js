@@ -1,7 +1,6 @@
 const { Sequelize } = require('sequelize');
 require('dotenv').config();
 
-// Connexion simple et propre
 const sequelize = new Sequelize(
   process.env.DB_NAME,
   process.env.DB_USER,
@@ -28,8 +27,7 @@ const connectDB = async () => {
     await sequelize.authenticate();
     console.log('✅ Database connected');
 
-    // Recréation des tables SI elles n'existent pas
-    await sequelize.sync(); 
+    await sequelize.sync({ alter: true });
 
   } catch (error) {
     console.error('❌ Database connection error:', error.message);

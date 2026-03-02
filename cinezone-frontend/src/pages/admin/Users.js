@@ -64,9 +64,8 @@ const AdminUsers = () => {
           subtitle={`${filteredUsers.length} utilisateur${filteredUsers.length > 1 ? 's' : ''} au total`}
         />
 
-        {/* Filters */}
         <div className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Search Bar */}
+
           <input
             type="text"
             placeholder="Rechercher un utilisateur..."
@@ -79,7 +78,6 @@ const AdminUsers = () => {
             }`}
           />
 
-          {/* Role Filter */}
           <select
             value={filterRole}
             onChange={(e) => setFilterRole(e.target.value)}
@@ -95,14 +93,12 @@ const AdminUsers = () => {
           </select>
         </div>
 
-        {/* Error Message */}
         {error && (
           <div className="bg-red-500 bg-opacity-10 border border-red-500 text-red-500 px-4 py-3 rounded-lg mb-6">
             {error}
           </div>
         )}
 
-        {/* Users Table */}
         <div className={`rounded-lg shadow-lg overflow-hidden ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
           <div className="overflow-x-auto">
             <table className="w-full">

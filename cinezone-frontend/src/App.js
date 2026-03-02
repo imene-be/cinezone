@@ -7,7 +7,6 @@ import { ThemeProvider } from './context/ThemeContext';
 import { ToastProvider } from './context/ToastContext';
 import MainLayout from './layouts/MainLayout';
 
-// Pages
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -39,13 +38,11 @@ function App() {
                 <Router>
                 <Routes>
 
-          {/* Pages publiques */}
           <Route path="/" element={<MainLayout><Home /></MainLayout>} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/mentions-legales" element={<MainLayout><MentionsLegales /></MainLayout>} />
 
-          {/* Pages principales */}
           <Route
             path="/catalog"
             element={
@@ -56,7 +53,6 @@ function App() {
               </NonAdminRoute>
             }
           />
-
 
           <Route
             path="/movie/:id"
@@ -98,7 +94,6 @@ function App() {
             }
           />
 
-          {/* Admin routes (protected) */}
           <Route
             path="/admin"
             element={
@@ -187,7 +182,6 @@ function App() {
             }
           />
 
-          {/* Page 404 */}
           <Route
             path="*"
             element={

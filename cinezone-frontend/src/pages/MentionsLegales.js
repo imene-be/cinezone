@@ -36,7 +36,6 @@ const MentionsLegales = () => {
     <div className={`min-h-screen py-16 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'}`}>
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* Header */}
         <div className="mb-12">
           <p className="text-xs font-mono text-cyan-400 uppercase tracking-widest mb-3">
             Transparence & légalité
@@ -45,13 +44,12 @@ const MentionsLegales = () => {
             Mentions légales
           </h1>
           <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
-            cinezone — projet scolaire
+            cinezone projet scolaire
           </p>
         </div>
 
         <div className="space-y-6">
 
-          {/* 01 — Qui a fait ce site ? */}
           <Section number={1} title="Qui a fait ce site ?" theme={theme}>
             <p>
               C'est moi,{' '}
@@ -76,7 +74,6 @@ const MentionsLegales = () => {
             </div>
           </Section>
 
-          {/* 02 — Hébergement */}
           <Section number={2} title="Hébergement" theme={theme}>
             <p>
               Ce projet est hébergé localement ou déployé via des plateformes de déploiement
@@ -88,7 +85,6 @@ const MentionsLegales = () => {
             </p>
           </Section>
 
-          {/* 03 — Propriété intellectuelle */}
           <Section number={3} title="Propriété intellectuelle" theme={theme}>
             <p>
               Le code source, le design et les contenus originaux de CineZone sont ma propriété
@@ -105,7 +101,6 @@ const MentionsLegales = () => {
             </p>
           </Section>
 
-          {/* 04 — Données personnelles & RGPD */}
           <Section number={4} title="Données personnelles & RGPD" theme={theme}>
             <p>
               Dans le cadre de l'utilisation de CineZone, les données suivantes peuvent être collectées
@@ -142,7 +137,6 @@ const MentionsLegales = () => {
             </div>
           </Section>
 
-          {/* 06 — Cadre légal */}
           <Section number={6} title="Cadre légal" theme={theme}>
             <p>
               La loi LCEN du 21 juin 2004 impose à tout éditeur de site web d'afficher des mentions
@@ -162,7 +156,6 @@ const MentionsLegales = () => {
             </div>
           </Section>
 
-          {/* 07 — Responsabilité */}
           <Section number={7} title="Responsabilité" theme={theme}>
             <p>
               CineZone est un projet étudiant. Les contenus présentés le sont à titre illustratif

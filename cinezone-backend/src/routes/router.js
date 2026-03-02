@@ -2,9 +2,7 @@ const routes = require('../config/routes.json');
 const upload = require('../middlewares/upload');
 const validators = require('../middlewares/validators');
 
-/**
- * Génère un handler de route
- */
+// Génère un handler de route
 const createHandler = (config, services) => async (req, res, next) => {
   try {
     const [serviceName, method] = config.handler.split('.');
@@ -30,9 +28,7 @@ const createHandler = (config, services) => async (req, res, next) => {
   }
 };
 
-/**
- * Récupère les middlewares de validation pour une route
- */
+// Récupère les middlewares de validation pour une route
 const getValidationMiddlewares = (validationName) => {
   if (!validationName || !validators[validationName]) {
     return [];

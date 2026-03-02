@@ -36,7 +36,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
 
   return (
     <nav aria-label="Pagination" className="flex items-center justify-center gap-2 mt-8">
-      {/* Bouton Précédent */}
+
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
@@ -48,7 +48,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         </svg>
       </button>
 
-      {/* Première page si pas visible */}
       {getPageNumbers()[0] > 1 && (
         <>
           <button
@@ -63,7 +62,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         </>
       )}
 
-      {/* Numéros de page */}
       {getPageNumbers().map((page) => (
         <button
           key={page}
@@ -75,7 +73,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         </button>
       ))}
 
-      {/* Dernière page si pas visible */}
       {getPageNumbers()[getPageNumbers().length - 1] < totalPages && (
         <>
           {getPageNumbers()[getPageNumbers().length - 1] < totalPages - 1 && (
@@ -90,7 +87,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         </>
       )}
 
-      {/* Bouton Suivant */}
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}

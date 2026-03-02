@@ -58,7 +58,6 @@ const AdminCategories = () => {
           subtitle={`${filteredCategories.length} catégorie${filteredCategories.length > 1 ? 's' : ''} au total`}
         />
 
-        {/* Action Button */}
         <div className="flex justify-end mb-6">
           <Link to="/admin/categories/new">
             <Button variant="primary" size="lg">
@@ -70,7 +69,6 @@ const AdminCategories = () => {
           </Link>
         </div>
 
-        {/* Search Bar */}
         <div className="mb-6">
           <input
             type="text"
@@ -85,14 +83,12 @@ const AdminCategories = () => {
           />
         </div>
 
-        {/* Error Message */}
         {error && (
           <div className="bg-red-500 bg-opacity-10 border border-red-500 text-red-500 px-4 py-3 rounded-lg mb-6">
             {error}
           </div>
         )}
 
-        {/* Categories Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredCategories.map((category) => (
             <div
@@ -130,7 +126,6 @@ const AdminCategories = () => {
           ))}
         </div>
 
-        {/* Empty State */}
         {filteredCategories.length === 0 && !loading && (
           <div className={`text-center py-12 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
             <svg className="w-16 h-16 mx-auto mb-4 opacity-50" fill="currentColor" viewBox="0 0 20 20">
@@ -140,7 +135,6 @@ const AdminCategories = () => {
           </div>
         )}
 
-        {/* Delete Confirmation Dialog */}
         <ConfirmDialog
           isOpen={deleteConfirm !== null}
           onClose={() => setDeleteConfirm(null)}

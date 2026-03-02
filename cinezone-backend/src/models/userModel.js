@@ -9,7 +9,8 @@ const User = sequelize.define('User', {
   firstName: { type: DataTypes.STRING(50), allowNull: false },
   lastName: { type: DataTypes.STRING(50), allowNull: false },
   role: { type: DataTypes.ENUM('user', 'admin'), defaultValue: 'user' },
-  isActive: { type: DataTypes.BOOLEAN, defaultValue: true }
+  isActive: { type: DataTypes.BOOLEAN, defaultValue: true },
+  avatar: { type: DataTypes.STRING(255), allowNull: true, defaultValue: null }
 }, {
   tableName: 'users',
   timestamps: true,

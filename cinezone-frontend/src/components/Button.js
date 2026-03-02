@@ -1,3 +1,4 @@
+import { useTheme } from '../context/ThemeContext';
 
 const Button = ({
   children,
@@ -9,16 +10,20 @@ const Button = ({
   type = 'button',
   fullWidth = false
 }) => {
-  // Variantes de styles
+  const { theme } = useTheme();
+
   const variants = {
     primary: 'bg-cyan-400 hover:bg-cyan-500 text-gray-900 font-semibold',
-    secondary: 'bg-gray-700 hover:bg-gray-600 text-white',
+    secondary: theme === 'dark'
+      ? 'bg-gray-700 hover:bg-gray-600 text-white'
+      : 'bg-gray-200 hover:bg-gray-300 text-gray-900',
     danger: 'bg-red-600 hover:bg-red-700 text-white',
     outline: 'border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-gray-900',
-    ghost: 'text-cyan-400 hover:bg-gray-800',
+    ghost: theme === 'dark'
+      ? 'text-cyan-400 hover:bg-gray-800'
+      : 'text-cyan-600 hover:bg-gray-100',
   };
 
-  // Tailles
   const sizes = {
     sm: 'px-3 py-1.5 text-sm',
     md: 'px-6 py-2.5 text-base',

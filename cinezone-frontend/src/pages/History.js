@@ -32,10 +32,9 @@ const History = () => {
         {history.length > 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8 gap-4">
             {history.map((item, index) => {
-              // Le backend retourne soit 'movie' soit 'movieId'
+
               const movie = item.movie || item.movieId;
 
-              // Si le film n'existe pas, on saute cet élément
               if (!movie) return null;
 
               return (

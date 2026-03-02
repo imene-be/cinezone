@@ -10,6 +10,7 @@
     { "method": "GET", "path": "/users/profile", "handler": "userService.getProfile", "useUser": true },
     { "method": "PUT", "path": "/users/profile", "handler": "userService.updateProfile", "useUser": true, "useBody": true, "validation": "updateProfileValidation" },
     { "method": "PUT", "path": "/users/password", "handler": "userService.updatePassword", "useUser": true, "useBody": true, "validation": "updatePasswordValidation" },
+    { "method": "PUT", "path": "/users/avatar", "handler": "userService.updateAvatar", "useUser": true, "useUpload": true, "uploadField": "avatar", "useFile": true },
     { "method": "GET", "path": "/watchlist", "handler": "watchlistService.getUserWatchlist", "useUser": true },
     { "method": "POST", "path": "/watchlist", "handler": "watchlistService.addToWatchlist", "useUser": true, "useBody": ["movieId"], "statusCode": 201, "validation": "watchlistValidation" },
     { "method": "DELETE", "path": "/watchlist/:movieId", "handler": "watchlistService.removeFromWatchlist", "useUser": true, "useParams": ["movieId"], "validation": "watchlistParamValidation" },

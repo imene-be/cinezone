@@ -10,75 +10,22 @@ const Footer = () => {
     <footer className={`border-t mt-auto ${
       theme === 'dark' ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-300'
     }`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="flex flex-col md:flex-row md:items-start gap-8">
-
-          {/* ---- LOGO + COPYRIGHT ---- */}
-          <div className="shrink-0">
-            <div className="flex items-center mb-4">
-              <img
-                src={theme === 'dark' ? Logocz : Logoczdark}
-                alt="Cinezone Logo"
-                style={{ width: '300px'}}
-                className="object-contain mr-4"
-              />
-            </div>
-            <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-              © 2025 Bentifraouine Imène - Tous droits réservés.
-            </p>
-            <p className="mt-1 text-sm">
-              <Link
-                to="/mentions-legales"
-                className={`hover:text-cyan-400 transition ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}
-              >
-                Mentions légales
-              </Link>
-            </p>
-          </div>
-
-          {/* ---- 3 SECTIONS GROUPÉES ---- */}
-          <div className="flex flex-wrap gap-x-8 gap-y-6">
-
-            {/* Entreprise */}
-            <div>
-              <h3 className={`font-semibold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                Entreprise
-              </h3>
-              <ul className="space-y-2">
-                <li><a className={`hover:text-cyan-400 transition ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} href="#">À propos</a></li>
-                <li><a className={`hover:text-cyan-400 transition ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} href="#">Carrières</a></li>
-                <li><a className={`hover:text-cyan-400 transition ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} href="#">Partenariats</a></li>
-              </ul>
-            </div>
-
-            {/* Aide */}
-            <div>
-              <h3 className={`font-semibold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                Besoin d'aide ?
-              </h3>
-              <ul className="space-y-2">
-                <li><a className={`hover:text-cyan-400 transition ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} href="#">Centre d'aide</a></li>
-                <li><a className={`hover:text-cyan-400 transition ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} href="#">FAQ</a></li>
-                <li><a className={`hover:text-cyan-400 transition ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} href="#">Support</a></li>
-              </ul>
-            </div>
-
-            {/* Social */}
-            <div>
-              <h3 className={`font-semibold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                Rejoignez-nous
-              </h3>
-              <div className="flex space-x-4 mb-4">
-                <a href="#" className={`hover:text-cyan-400 transition ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.988H7.898v-2.89h2.54V9.797c0-2.507 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.772-1.63 1.562v1.875h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
-                  </svg>
-                </a>
-              </div>
-            </div>
-
-          </div>
-        </div>
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-10 flex flex-col items-center text-center gap-3">
+        <img
+          src={theme === 'dark' ? Logocz : Logoczdark}
+          alt="Cinezone Logo"
+          style={{ width: '220px' }}
+          className="object-contain"
+        />
+        <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+          © 2025 Bentifraouine Imène - Tous droits réservés.
+        </p>
+        <Link
+          to="/mentions-legales"
+          className={`text-sm hover:text-cyan-400 transition ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}
+        >
+          Mentions légales
+        </Link>
       </div>
     </footer>
   );

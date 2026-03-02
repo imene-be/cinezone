@@ -1,12 +1,16 @@
+import { useTheme } from '../context/ThemeContext';
 
 const Card = ({ children, className = '', hover = false, onClick }) => {
+  const { theme } = useTheme();
+
   return (
     <div
       onClick={onClick}
       className={`
-        bg-gray-800 rounded-xl overflow-hidden
+        ${theme === 'dark' ? 'bg-gray-800' : 'bg-white border border-gray-200'}
+        rounded-xl overflow-hidden
         ${hover
-          ? 'cursor-pointer transition-all duration-300 ease-out hover:scale-[1.04] hover:shadow-2xl hover:shadow-black/60 hover:z-10 relative'
+          ? 'cursor-pointer transition-all duration-300 ease-out hover:scale-[1.04] hover:shadow-2xl hover:shadow-black/30 hover:z-10 relative'
           : ''}
         ${className}
       `}

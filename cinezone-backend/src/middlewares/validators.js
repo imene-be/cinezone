@@ -15,7 +15,7 @@ const handleValidation = (req, res, next) => {
   next();
 };
 
-// ===================== AUTH VALIDATORS =====================
+// AUTH VALIDATORS
 const registerValidation = [
   body('email')
     .isEmail()
@@ -50,7 +50,7 @@ const loginValidation = [
   handleValidation
 ];
 
-// ===================== MOVIE VALIDATORS =====================
+//  MOVIE VALIDATORS 
 const createMovieValidation = [
   body('title')
     .trim()
@@ -97,7 +97,7 @@ const movieIdValidation = [
   handleValidation
 ];
 
-// ===================== CATEGORY VALIDATORS =====================
+//  CATEGORY VALIDATORS 
 const createCategoryValidation = [
   body('name')
     .trim()
@@ -128,7 +128,7 @@ const categoryIdValidation = [
   handleValidation
 ];
 
-// ===================== USER VALIDATORS =====================
+//  USER VALIDATORS 
 const updateProfileValidation = [
   body('firstName')
     .optional()
@@ -169,7 +169,7 @@ const userIdValidation = [
   handleValidation
 ];
 
-// ===================== WATCHLIST VALIDATORS =====================
+//  WATCHLIST VALIDATORS 
 const watchlistValidation = [
   body('movieId')
     .isInt({ min: 1 })
@@ -184,7 +184,7 @@ const watchlistParamValidation = [
   handleValidation
 ];
 
-// ===================== NOTE VALIDATORS =====================
+//  NOTE VALIDATORS 
 const createNoteValidation = [
   body('movieId')
     .isInt({ min: 1 })
@@ -223,7 +223,7 @@ const noteIdValidation = [
   handleValidation
 ];
 
-// ===================== QUERY VALIDATORS =====================
+//  QUERY VALIDATORS 
 const paginationValidation = [
   query('page')
     .optional()

@@ -1,15 +1,12 @@
 import axios from 'axios';
 
-// Configuration API
 const API_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:8000/api';
 
-// Instance Axios configurée
 const api = axios.create({
   baseURL: API_URL,
   headers: { 'Content-Type': 'application/json' },
 });
 
-// Intercepteur pour ajouter le token
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -19,7 +16,6 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Intercepteur pour gérer les erreurs 401
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -32,7 +28,6 @@ api.interceptors.response.use(
   }
 );
 
-// ===================== AUTH =====================
 export const auth = {
   register: async (userData) => {
     const { data } = await api.post('/auth/register', userData);
@@ -59,12 +54,11 @@ export const auth = {
 
   getCurrentUser: () => {
     const user = localStorage.getItem('user');
-    // fixme: a reverifier avec plus de test
+
     return user !== "undefined" ? JSON.parse(user) : null;
   },
 };
 
-// ===================== MOVIES =====================
 export const movies = {
   getAll: async (params = {}) => {
     const { data } = await api.get('/movies', { params });
@@ -73,7 +67,7 @@ export const movies = {
 
   getAllWithPagination: async (params = {}) => {
     const { data } = await api.get('/movies', { params });
-    return data; // Returns { movies, pagination }
+    return data;
   },
 
   getById: async (id) => {
@@ -87,7 +81,6 @@ export const movies = {
   },
 };
 
-// ===================== CATEGORIES =====================
 export const categories = {
   getAll: async (params = {}) => {
     const { data } = await api.get('/categories', { params });
@@ -96,11 +89,10 @@ export const categories = {
 
   getAllWithPagination: async (params = {}) => {
     const { data } = await api.get('/categories', { params });
-    return data; // Returns { categories, pagination }
+    return data;
   },
 };
 
-// ===================== WATCHLIST =====================
 export const watchlist = {
   get: async () => {
     const { data } = await api.get('/watchlist');
@@ -118,7 +110,6 @@ export const watchlist = {
   },
 };
 
-// ===================== NOTES =====================
 export const notes = {
   get: async () => {
     const { data } = await api.get('/notes');
@@ -136,7 +127,6 @@ export const notes = {
   },
 };
 
-// ===================== HISTORY =====================
 export const history = {
   get: async (params = {}) => {
     const { data } = await api.get('/history', { params });
@@ -144,7 +134,6 @@ export const history = {
   },
 };
 
-// ===================== USER =====================
 export const user = {
   getProfile: async () => {
     const { data } = await api.get('/users/profile');
@@ -161,15 +150,22 @@ export const user = {
     const { data } = await api.put('/users/password', passwordData);
     return data;
   },
+
+  updateAvatar: async (formData) => {
+    const { data } = await api.put('/users/avatar', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+    localStorage.setItem('user', JSON.stringify(data.user));
+    return data;
+  },
 };
 
-// ===================== ADMIN =====================
 export const admin = {
-  // Movies
+
   createMovie: async (movieData) => {
-    // movieData can be FormData (with poster) or plain object
+
     if (movieData instanceof FormData) {
-      // Let axios set the Content-Type (with proper boundary) when sending FormData
+
       const { data } = await api.post('/movies', movieData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
@@ -181,7 +177,7 @@ export const admin = {
 
   updateMovie: async (movieId, movieData) => {
     if (movieData instanceof FormData) {
-      // Let axios set the Content-Type (with proper boundary) when sending FormData
+
       const { data } = await api.put(`/movies/${movieId}`, movieData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
@@ -196,7 +192,6 @@ export const admin = {
     return data;
   },
 
-  // Categories
   createCategory: async (categoryData) => {
     const { data } = await api.post('/categories', categoryData);
     return data;
@@ -212,7 +207,6 @@ export const admin = {
     return data;
   },
 
-  // Users
   getAllUsers: async (params = {}) => {
     const { data } = await api.get('/users', { params });
     return data;
@@ -223,7 +217,6 @@ export const admin = {
     return data;
   },
 
-  // Media upload (si nécessaire pour les images de films)
   uploadImage: async (formData) => {
     const { data } = await api.post('/admin/upload', formData);
     return data;

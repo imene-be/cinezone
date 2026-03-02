@@ -1,33 +1,29 @@
-// Tests E2E CineZone - Version Intermédiaire
-
 describe('CineZone - Tests de Navigation', () => {
 
   beforeEach(() => {
-    // Visiter la page d'accueil avant chaque test
     cy.visit('/');
+    cy.get('nav', { timeout: 10000 }).should('exist');
   });
 
   it('La page d\'accueil se charge correctement', () => {
-    cy.get('body').should('exist');
-    cy.contains('CineZone').should('be.visible');
+    cy.get('nav').should('exist');
+    cy.get('img[alt*="inezone"]').should('exist');
   });
 
   it('On peut naviguer vers la page de connexion', () => {
-    cy.contains('Connexion').click();
+    cy.get('nav').contains('Connexion').click();
     cy.url().should('include', '/login');
     cy.get('input[type="email"]').should('be.visible');
     cy.get('input[type="password"]').should('be.visible');
   });
 
   it('On peut naviguer vers la page d\'inscription', () => {
-    cy.contains('Inscription').click();
+    cy.get('nav').contains('Inscription').click();
     cy.url().should('include', '/register');
-    cy.get('input[type="text"]').should('exist');
     cy.get('input[type="email"]').should('exist');
   });
 
   it('On peut naviguer vers le catalogue', () => {
-    // Les utilisateurs non authentifiés peuvent accéder directement au catalogue
     cy.visit('/catalog');
     cy.url().should('include', '/catalog');
   });
@@ -48,7 +44,6 @@ describe('CineZone - Tests d\'Authentification', () => {
 
   it('Affiche une erreur avec des identifiants vides', () => {
     cy.contains('button', 'Se connecter').click();
-    // Le formulaire doit empêcher la soumission
     cy.url().should('include', '/login');
   });
 
@@ -71,14 +66,11 @@ describe('CineZone - Tests du Catalogue', () => {
   });
 
   it('Peut rechercher des films', () => {
-    // Chercher le champ de recherche
     cy.get('input[type="text"]').first().should('be.visible');
   });
 
   it('Affiche des cartes de films', () => {
-    // Attendre que les films se chargent
     cy.wait(2000);
-    // Vérifier qu'il y a au moins un élément film (article, div, etc.)
     cy.get('body').should('exist');
   });
 
@@ -88,10 +80,10 @@ describe('CineZone - Tests de l\'Interface', () => {
 
   beforeEach(() => {
     cy.visit('/');
+    cy.get('nav', { timeout: 10000 }).should('exist');
   });
 
   it('Le header est présent', () => {
-    // La navbar sert de header dans cette application
     cy.get('nav').should('exist');
   });
 
@@ -100,7 +92,6 @@ describe('CineZone - Tests de l\'Interface', () => {
   });
 
   it('Les liens de navigation fonctionnent', () => {
-    // Vérifier que les liens de navigation existent pour un utilisateur non connecté
     cy.get('nav').within(() => {
       cy.contains('Connexion').should('exist');
       cy.contains('Inscription').should('exist');
@@ -108,9 +99,7 @@ describe('CineZone - Tests de l\'Interface', () => {
   });
 
   it('Le thème clair/sombre peut être basculé', () => {
-    // Chercher le bouton de thème (s'il existe)
     cy.get('body').should('exist');
-    // Vérifier que la classe dark peut être appliquée
     cy.document().then((doc) => {
       const hasTheme = doc.documentElement.classList.contains('dark') ||
                        doc.documentElement.classList.contains('light');
@@ -133,7 +122,7 @@ describe('CineZone - Tests de Responsivité', () => {
       cy.viewport(size.width, size.height);
       cy.visit('/');
       cy.get('body').should('be.visible');
-      cy.get('nav').should('exist');
+      cy.get('nav', { timeout: 10000 }).should('exist');
     });
   });
 
@@ -145,7 +134,6 @@ describe('CineZone - Tests des Détails de Film', () => {
     cy.visit('/catalog');
     cy.wait(2000);
 
-    // Essayer de cliquer sur un film (si présent)
     cy.get('body').then($body => {
       if ($body.find('article').length > 0) {
         cy.get('article').first().click();

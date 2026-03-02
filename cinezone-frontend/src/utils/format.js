@@ -1,8 +1,3 @@
-/**
- * Convertit une durée en minutes en format "Xh XXmin"
- * @param {number} minutes
- * @returns {string}
- */
 export const formatDuration = (minutes) => {
   if (!minutes || minutes === 0) return 'N/A';
 

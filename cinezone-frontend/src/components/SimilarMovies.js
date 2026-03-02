@@ -5,7 +5,7 @@ import { searchMovies, getTmdbImageUrl, getMovieDetails, convertTmdbToMovie } fr
 import { categories as categoriesApi, admin } from '../utils/api';
 import Card from './Card';
 
-const SimilarMovies = ({ movieTitle, movieCategories }) => {
+const SimilarMovies = ({ movieTitle }) => {
   const { theme } = useTheme();
   const navigate = useNavigate();
   const [similarMovies, setSimilarMovies] = useState([]);
@@ -30,10 +30,9 @@ const SimilarMovies = ({ movieTitle, movieCategories }) => {
 
       try {
         setLoading(true);
-        // Rechercher des films similaires via TMDB
+
         const results = await searchMovies(movieTitle);
 
-        // Filtrer pour exclure le film actuel et limiter à 6 résultats
         const filtered = results
           .filter(m => m.title.toLowerCase() !== movieTitle.toLowerCase())
           .slice(0, 6);
@@ -63,7 +62,7 @@ const SimilarMovies = ({ movieTitle, movieCategories }) => {
 
   return (
     <div className={`py-12 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-4 sm:px-6 lg:px-8">
         <h2 className={`text-3xl font-bold mb-8 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
           Films similaires
         </h2>
@@ -75,11 +74,10 @@ const SimilarMovies = ({ movieTitle, movieCategories }) => {
               hover
               onClick={async () => {
                 try {
-                  // Récupérer les détails complets du film depuis TMDB
+
                   const details = await getMovieDetails(movie.id);
                   const convertedMovie = convertTmdbToMovie(details);
 
-                  // Mapper les genres TMDB avec les catégories
                   const genreMapping = {
                     28: 'Action', 12: 'Aventure', 16: 'Animation', 35: 'Comédie',
                     80: 'Crime', 99: 'Documentaire', 18: 'Drame', 10751: 'Familial',
@@ -99,7 +97,6 @@ const SimilarMovies = ({ movieTitle, movieCategories }) => {
                     ))
                     .map(cat => cat.id);
 
-                  // Créer le film dans la BDD
                   const formData = new FormData();
                   formData.append('title', convertedMovie.title);
                   formData.append('description', convertedMovie.description);
@@ -114,11 +111,10 @@ const SimilarMovies = ({ movieTitle, movieCategories }) => {
                   const createdMovie = await admin.createMovie(formData);
                   const movieId = createdMovie.movie?.id || createdMovie.id;
 
-                  // Naviguer vers le nouveau film créé
                   navigate(`/movie/${movieId}`);
                 } catch (error) {
                   console.error('Erreur lors de la création du film:', error);
-                  // Si le film existe déjà, rechercher dans le catalogue
+
                   navigate(`/catalog?search=${encodeURIComponent(movie.title)}`);
                 }
               }}

@@ -2,19 +2,20 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useWatchlist } from '../context/WatchlistContext';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import axios from 'axios';
 import Card from './Card';
 
-const MovieCard = ({ movie }) => {
+const MovieCard = ({ movie, index = 0 }) => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const { isInWatchlist, toggleWatchlist } = useWatchlist();
+  const { theme } = useTheme();
   const [imageError, setImageError] = useState(false);
   const [imageSrc, setImageSrc] = useState(null);
 
   const inWatchlist = isInWatchlist(movie.id);
 
-  // Charger l'image via Axios
   useEffect(() => {
     const loadImage = async () => {
       if (!movie.poster) {
@@ -22,13 +23,11 @@ const MovieCard = ({ movie }) => {
         return;
       }
 
-      // Si c'est une URL externe (TMDB), utiliser directement
       if (movie.poster.startsWith('http')) {
         setImageSrc(movie.poster);
         return;
       }
 
-      // Sinon, charger depuis le backend via Axios
       try {
         let baseUrl = process.env.REACT_APP_BASE_URL || 'http://localhost:8000';
         if (baseUrl.endsWith('/api')) baseUrl = baseUrl.replace(/\/api\/?$/, '');
@@ -45,12 +44,12 @@ const MovieCard = ({ movie }) => {
 
     loadImage();
 
-    // Cleanup: libérer l'URL blob quand le composant se démonte
     return () => {
       if (imageSrc && imageSrc.startsWith('blob:')) {
         URL.revokeObjectURL(imageSrc);
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [movie.poster]);
 
   const handleClick = () => {
@@ -58,7 +57,7 @@ const MovieCard = ({ movie }) => {
   };
 
   const handleWatchlistToggle = async (e) => {
-    e.stopPropagation(); // Empêcher la navigation
+    e.stopPropagation();
 
     if (!isAuthenticated) {
       navigate('/login');
@@ -71,13 +70,13 @@ const MovieCard = ({ movie }) => {
   return (
     <article
       data-testid="movie-card"
-      className="relative group"
-      role="article"
+      className="relative group animate-scaleIn"
+      style={{ animationDelay: `${(index % 8) * 50}ms` }}
       aria-label={`Film: ${movie.title}`}
     >
       <Card hover onClick={handleClick}>
-        {/* Image du film */}
-        <div className="relative aspect-[2/3] overflow-hidden bg-gray-700">
+
+        <div className={`relative aspect-[2/3] overflow-hidden ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'}`}>
           {!imageError && imageSrc ? (
             <img
               src={imageSrc}
@@ -93,7 +92,7 @@ const MovieCard = ({ movie }) => {
               aria-label="Image non disponible"
             >
               <svg
-                className="w-16 h-16 text-gray-600"
+                className={`w-16 h-16 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-400'}`}
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 aria-hidden="true"
@@ -103,7 +102,6 @@ const MovieCard = ({ movie }) => {
             </div>
           )}
 
-          {/* Overlay avec boutons */}
           <div
             className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center"
             aria-hidden="true"
@@ -137,13 +135,12 @@ const MovieCard = ({ movie }) => {
         </div>
       </div>
 
-      {/* Informations du film */}
       <div className="p-3 transition-transform duration-300 group-hover:-translate-y-0.5">
-        <h3 className="font-semibold text-sm leading-snug mb-1 truncate text-white" title={movie.title}>
+        <h3 className={`font-semibold text-sm leading-snug mb-1 truncate ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`} title={movie.title}>
           {movie.title}
         </h3>
 
-        <div className="flex items-center justify-between text-xs text-gray-400">
+        <div className={`flex items-center justify-between text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
           <time dateTime={movie.releaseYear}>{movie.releaseYear || 'N/A'}</time>
           {movie.rating && (
             <div className="flex items-center" aria-label={`Note: ${movie.rating.toFixed(1)} sur 10`}>
@@ -155,14 +152,13 @@ const MovieCard = ({ movie }) => {
           )}
         </div>
 
-        {/* Catégories */}
         {movie.categoryIds && movie.categoryIds.length > 0 && (
           <div className="flex flex-wrap gap-1 mt-1.5" role="list" aria-label="Catégories">
             {movie.categoryIds.slice(0, 2).map((category, index) => (
               <span
                 key={index}
                 role="listitem"
-                className="text-xs bg-gray-700/80 text-cyan-400 px-1.5 py-0.5 rounded-md"
+                className={`text-xs px-1.5 py-0.5 rounded-md ${theme === 'dark' ? 'bg-gray-700/80 text-cyan-400' : 'bg-gray-100 text-cyan-600'}`}
               >
                 {category.name || category}
               </span>

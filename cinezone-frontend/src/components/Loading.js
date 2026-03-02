@@ -1,4 +1,3 @@
-
 const Loading = ({ fullScreen = false, text = 'Chargement...' }) => {
   const content = (
     <div className="flex flex-col items-center justify-center">

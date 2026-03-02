@@ -4,6 +4,8 @@ import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import Input from '../components/Input';
 import Button from '../components/Button';
+import LogoDark from '../assets/images/Logodark.png';
+import Logo from '../assets/images/Logo.png';
 
 const Login = () => {
   const { theme } = useTheme();
@@ -39,22 +41,22 @@ const Login = () => {
   };
 
   return (
-    <div className={`min-h-screen flex items-center justify-center px-4 ${
+    <div className={`min-h-screen flex items-center justify-center px-4 animate-page ${
       theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'
     }`}>
       <div className="max-w-md w-full space-y-8">
-        {/* Logo et titre */}
+
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-cyan-400 mb-2">CINE ZONE</h1>
-          <h2 className={`text-2xl font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-            Connexion
-          </h2>
+          <img
+            src={theme === 'dark' ? Logo : LogoDark}
+            alt="CINE ZONE Logo"
+            className="h-14 w-auto object-contain mx-auto mb-2"
+          />
           <p className={`mt-2 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
             Accédez à votre compte pour continuer
           </p>
         </div>
 
-        {/* Formulaire */}
         <div className={`rounded-lg p-8 shadow-xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
           <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
@@ -109,7 +111,6 @@ const Login = () => {
             </Button>
           </form>
 
-          {/* Lien inscription */}
           <div className="mt-6 text-center">
             <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
               Pas encore de compte ?{' '}
@@ -122,7 +123,6 @@ const Login = () => {
             </p>
           </div>
 
-          {/* Lien retour */}
           <div className="mt-4 text-center">
             <Link
               to="/"

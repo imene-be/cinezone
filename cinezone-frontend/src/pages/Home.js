@@ -5,7 +5,6 @@ import { useTheme } from "../context/ThemeContext";
 import Button from "../components/Button";
 import gridMovies from "../assets/images/gridMovies.png";
 
-// FAQ
 const faqData = [
   {
     question: "Qu'est-ce que CINEZONE ?",
@@ -46,12 +45,10 @@ const Home = () => {
   return (
     <div className={`relative w-full min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'}`}>
 
-      {/* ---------------- Hero Section ---------------- */}
       <div className="relative w-full h-[85vh] md:h-[90vh] overflow-hidden">
 
-        {/* Image + dégradé */}
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 opacity-40"
           style={{
             backgroundImage: `url(${gridMovies})`,
             backgroundSize: "cover",
@@ -59,36 +56,32 @@ const Home = () => {
             backgroundPosition: "center top",
           }}
         >
-          <div className={`absolute inset-0 bg-gradient-to-b from-transparent ${
+          <div className={`absolute inset-0 bg-gradient-to-b ${
             theme === 'dark'
-              ? 'via-gray-900/40 to-gray-900'
-              : 'via-gray-100/40 to-gray-100'
+              ? 'from-black/20 via-black/10 to-gray-900'
+              : 'from-black/20 via-black/10 to-gray-100'
           }`}></div>
         </div>
 
-        {/* Contenu Hero */}
         <div className="relative z-20 flex flex-col items-center justify-center h-full text-center px-6 max-w-7xl mx-auto">
-          <h1 className={`text-5xl md:text-7xl font-bold mb-6 drop-shadow-lg animate-fadeInUp ${
-            theme === 'dark' ? 'text-white' : 'text-gray-900'
-          }`}>
-            Découvrez des milliers de films
-          </h1>
+          <div className="flex flex-col items-center gap-4">
+            <h1 className="text-5xl md:text-7xl font-bold text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)] animate-fadeInUp">
+              Découvrez des milliers de films
+            </h1>
 
-          <p className={`text-xl md:text-2xl mb-8 drop-shadow-md animate-fadeInUp delay-200 ${
-            theme === 'dark' ? 'text-gray-200' : 'text-gray-700'
-          }`}>
-            Votre catalogue de films en ligne
-          </p>
+            <p className="text-xl md:text-2xl text-gray-100 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] animate-fadeInUp delay-200">
+              Votre catalogue de films en ligne
+            </p>
 
-          <div className="animate-fadeInUp delay-400">
-            <Button variant="primary" size="lg" onClick={handleGetStarted}>
-              {isAuthenticated ? 'Parcourir le catalogue' : 'Commencer'}
-            </Button>
+            <div className="animate-fadeInUp delay-400">
+              <Button variant="primary" size="lg" onClick={handleGetStarted}>
+                {isAuthenticated ? 'Parcourir le catalogue' : 'Commencer'}
+              </Button>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* ---------------- FAQ Section ---------------- */}
       <div className={`py-8 -mt-24 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className={`text-3xl md:text-4xl font-bold text-center mb-8 ${
@@ -129,7 +122,6 @@ const Home = () => {
                   </svg>
                 </button>
 
-                {/* Transition fluide par max-height */}
                 <div
                   style={{
                     maxHeight: openIndex === index ? '400px' : '0px',

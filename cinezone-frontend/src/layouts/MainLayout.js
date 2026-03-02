@@ -5,7 +5,7 @@ const MainLayout = ({ children }) => {
   return (
     <div className="min-h-screen bg-gray-950 text-white flex flex-col">
       <Navbar />
-      <main className="flex-grow">
+      <main className="flex-grow animate-page">
         {children}
       </main>
       <Footer />

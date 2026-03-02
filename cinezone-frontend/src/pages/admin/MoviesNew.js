@@ -67,7 +67,7 @@ const MoviesNew = () => {
   };
 
   const handleTmdbSelect = async (tmdbData) => {
-    // Remplir uniquement les champs vides
+
     setFormData(prev => {
       const newData = { ...prev };
 
@@ -77,7 +77,6 @@ const MoviesNew = () => {
       if (!newData.duration && tmdbData.duration) newData.duration = tmdbData.duration;
       if (!newData.trailer && tmdbData.trailer) newData.trailer = tmdbData.trailer;
 
-      // Ajouter l'URL du poster TMDB directement
       if (!posterFile && tmdbData.poster) {
         newData.posterUrl = tmdbData.poster;
       }
@@ -85,12 +84,10 @@ const MoviesNew = () => {
       return newData;
     });
 
-    // Afficher le preview du poster TMDB
     if (tmdbData.poster && !posterFile) {
       setPosterPreview(tmdbData.poster);
     }
 
-    // Mapper les genres TMDB avec les catégories
     if (tmdbData.tmdbGenres && tmdbData.tmdbGenres.length > 0) {
       const genreMapping = {
         28: 'Action', 12: 'Aventure', 16: 'Animation', 35: 'Comédie',
@@ -104,7 +101,6 @@ const MoviesNew = () => {
         typeof g === 'object' ? g.name : genreMapping[g]
       ).filter(Boolean);
 
-      // Trouver les catégories correspondantes
       const matchingCategoryIds = categories
         .filter(cat => tmdbGenreNames.some(genreName =>
           cat.name.toLowerCase().includes(genreName.toLowerCase()) ||
@@ -143,7 +139,7 @@ const MoviesNew = () => {
     if (formData.categoryIds.length > 0) {
       fd.append('categories', JSON.stringify(formData.categoryIds));
     }
-    // Si un fichier est uploadé, l'utiliser. Sinon, utiliser l'URL TMDB si disponible
+
     if (posterFile) {
       fd.append('poster', posterFile);
     } else if (formData.posterUrl) {
@@ -170,23 +166,21 @@ const MoviesNew = () => {
           subtitle="Remplissez les informations du nouveau film"
         />
 
-        {/* Form */}
         <div className={`rounded-lg p-6 shadow-lg ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Error Message */}
+
             {error && (
               <div className="bg-red-500 bg-opacity-10 border border-red-500 text-red-500 px-4 py-3 rounded-lg">
                 {error}
               </div>
             )}
 
-            {/* TMDB Search */}
             <TmdbSearch onSelectMovie={handleTmdbSelect} currentFormData={formData} />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Left Column */}
+
               <div className="space-y-6">
-                {/* Title */}
+
                 <Input
                   label="Titre"
                   name="title"
@@ -196,7 +190,6 @@ const MoviesNew = () => {
                   required
                 />
 
-                {/* Release Date */}
                 <div>
                   <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                     Date de sortie
@@ -214,7 +207,6 @@ const MoviesNew = () => {
                   />
                 </div>
 
-                {/* Duration */}
                 <Input
                   label="Durée (en minutes)"
                   name="duration"
@@ -225,7 +217,6 @@ const MoviesNew = () => {
                   min="1"
                 />
 
-                {/* Trailer URL */}
                 <Input
                   label="URL de la bande-annonce"
                   name="trailer"
@@ -234,7 +225,6 @@ const MoviesNew = () => {
                   placeholder="https://youtube.com/..."
                 />
 
-                {/* Status */}
                 <div>
                   <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                     Statut
@@ -256,9 +246,8 @@ const MoviesNew = () => {
                 </div>
               </div>
 
-              {/* Right Column */}
               <div className="space-y-6">
-                {/* Poster Upload */}
+
                 <div>
                   <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                     Affiche (poster)
@@ -280,7 +269,6 @@ const MoviesNew = () => {
                   )}
                 </div>
 
-                {/* Categories */}
                 <div>
                   <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                     Catégories
@@ -304,7 +292,6 @@ const MoviesNew = () => {
               </div>
             </div>
 
-            {/* Description - Full Width */}
             <div>
               <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                 Description
@@ -323,7 +310,6 @@ const MoviesNew = () => {
               />
             </div>
 
-            {/* Buttons */}
             <div className="flex justify-end space-x-4 pt-4 border-t border-gray-700">
               <button
                 type="button"
@@ -343,7 +329,6 @@ const MoviesNew = () => {
           </form>
         </div>
 
-        {/* Confirmation Dialog */}
         <ConfirmDialog
           isOpen={showConfirm}
           onClose={() => setShowConfirm(false)}

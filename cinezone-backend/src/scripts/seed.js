@@ -42,18 +42,18 @@ async function getMovieDetails(movieId) {
 
 async function seed() {
   try {
-    console.log('🚀 Démarrage du seed...\n');
+    console.log('Démarrage du seed...\n');
 
     // Connexion DB
     await sequelize.authenticate();
-    console.log('✅ Connexion DB OK\n');
+    console.log('Connexion DB OK\n');
 
     // Sync tables
     await sequelize.sync({ force: true });
-    console.log('✅ Tables recréées\n');
+    console.log('Tables recréées\n');
 
     // 1. Créer les catégories
-    console.log('📁 Création des catégories...');
+    console.log('Création des catégories...');
     const categories = {};
     for (const [tmdbId, data] of Object.entries(genreMapping)) {
       const cat = await Category.create({
@@ -66,13 +66,13 @@ async function seed() {
     console.log(`✅ ${Object.keys(categories).length} catégories créées\n`);
 
     // 2. Récupérer les films populaires (5 pages = 100 films)
-    console.log('🎬 Récupération des films depuis TMDB...');
+    console.log('Récupération des films depuis TMDB...');
     const allMovies = [];
 
     for (let page = 1; page <= 5; page++) {
       const data = await fetchFromTMDB(`/movie/popular?page=${page}`);
       allMovies.push(...data.results);
-      console.log(`   Page ${page}/5 récupérée (${data.results.length} films)`);
+      console.log(`Page ${page}/5 récupérée (${data.results.length} films)`);
     }
 
     // Ajouter aussi quelques films bien notés
@@ -80,10 +80,10 @@ async function seed() {
       const data = await fetchFromTMDB(`/movie/top_rated?page=${page}`);
       allMovies.push(...data.results);
     }
-    console.log(`✅ ${allMovies.length} films récupérés au total\n`);
+    console.log(`${allMovies.length} films récupérés au total\n`);
 
     // 3. Insérer les films
-    console.log('💾 Insertion des films en base...');
+    console.log('Insertion des films en base...');
     const insertedMovies = new Set();
     let count = 0;
 
@@ -139,24 +139,24 @@ async function seed() {
         await new Promise(r => setTimeout(r, 100));
 
       } catch (err) {
-        console.log(`   ⚠️  Erreur pour "${tmdbMovie.title}": ${err.message}`);
+        console.log(`Erreur pour "${tmdbMovie.title}": ${err.message}`);
       }
     }
 
-    console.log(`\n✅ ${count} films insérés avec succès!`);
-    console.log('\n🎉 Seed terminé!\n');
+    console.log(`\n ${count} films insérés avec succès!`);
+    console.log('\n Seed terminé!\n');
 
     // Stats finales
     const movieCount = await Movie.count();
     const categoryCount = await Category.count();
-    console.log(`📊 Statistiques:`);
-    console.log(`   - ${movieCount} films`);
-    console.log(`   - ${categoryCount} catégories\n`);
+    console.log(`Statistiques:`);
+    console.log(`- ${movieCount} films`);
+    console.log(`- ${categoryCount} catégories\n`);
 
     process.exit(0);
 
   } catch (error) {
-    console.error('❌ Erreur:', error.message);
+    console.error('Erreur:', error.message);
     process.exit(1);
   }
 }

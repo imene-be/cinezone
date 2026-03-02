@@ -55,17 +55,15 @@ const CategoriesNew = () => {
           subtitle="Créez une nouvelle catégorie pour organiser vos films"
         />
 
-        {/* Form */}
         <div className={`rounded-lg p-6 shadow-lg ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Error Message */}
+
             {error && (
               <div className="bg-red-500 bg-opacity-10 border border-red-500 text-red-500 px-4 py-3 rounded-lg">
                 {error}
               </div>
             )}
 
-            {/* Name */}
             <Input
               label="Nom de la catégorie"
               name="name"
@@ -75,7 +73,6 @@ const CategoriesNew = () => {
               required
             />
 
-            {/* Description */}
             <div>
               <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                 Description (optionnelle)
@@ -94,7 +91,6 @@ const CategoriesNew = () => {
               />
             </div>
 
-            {/* Buttons */}
             <div className="flex justify-end space-x-4">
               <button
                 type="button"
@@ -114,7 +110,6 @@ const CategoriesNew = () => {
           </form>
         </div>
 
-        {/* Confirmation Dialog */}
         <ConfirmDialog
           isOpen={showConfirm}
           onClose={() => setShowConfirm(false)}

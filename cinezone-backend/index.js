@@ -1,13 +1,11 @@
 require('dotenv').config();
 
-// Global error handlers to help debugging sudden exits
 process.on('unhandledRejection', (reason, promise) => {
   console.error('✖ Unhandled Rejection at:', promise, 'reason:', reason);
 });
 
 process.on('uncaughtException', (err) => {
   console.error('✖ Uncaught Exception thrown:', err);
-  // keep default behavior after logging
   process.exit(1);
 });
 const express = require('express');

@@ -8,7 +8,6 @@ import Loading from '../../components/Loading';
 import AdminHeader from '../../components/AdminHeader';
 import ConfirmDialog from '../../components/ConfirmDialog';
 
-
 const CategoriesEdit = () => {
   const { theme } = useTheme();
   const { id } = useParams();
@@ -91,17 +90,15 @@ const CategoriesEdit = () => {
           subtitle="Modifiez les informations de cette catégorie"
         />
 
-        {/* Form */}
         <div className={`rounded-lg p-6 shadow-lg ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Error Message */}
+
             {error && (
               <div className="bg-red-500 bg-opacity-10 border border-red-500 text-red-500 px-4 py-3 rounded-lg">
                 {error}
               </div>
             )}
 
-            {/* Name */}
             <Input
               label="Nom de la catégorie"
               name="name"
@@ -111,7 +108,6 @@ const CategoriesEdit = () => {
               required
             />
 
-            {/* Description */}
             <div>
               <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                 Description (optionnelle)
@@ -130,7 +126,6 @@ const CategoriesEdit = () => {
               />
             </div>
 
-            {/* Buttons */}
             <div className="flex justify-end space-x-4">
               <button
                 type="button"
@@ -150,7 +145,6 @@ const CategoriesEdit = () => {
           </form>
         </div>
 
-        {/* Confirmation Dialog */}
         <ConfirmDialog
           isOpen={showConfirm}
           onClose={() => setShowConfirm(false)}

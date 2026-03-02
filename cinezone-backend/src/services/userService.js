@@ -1,6 +1,8 @@
 const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 const { Op } = require('sequelize');
+const path = require('path');
+const fs = require('fs');
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -149,4 +151,18 @@ exports.deleteUser = async (userId) => {
   await user.destroy();
 
   return { message: 'Utilisateur supprimé avec succès' };
+};
+
+exports.updateAvatar = async (userId, file) => {
+  const user = await User.findByPk(userId);
+  if (!user) throw new Error('Utilisateur non trouvé');
+  if (!file) throw new Error('Aucun fichier fourni');
+
+  if (user.avatar && user.avatar.startsWith('/uploads/')) {
+    const oldPath = path.join(__dirname, '../../../uploads', path.basename(user.avatar));
+    if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+  }
+
+  await user.update({ avatar: `/uploads/${file.filename}` });
+  return { user };
 };

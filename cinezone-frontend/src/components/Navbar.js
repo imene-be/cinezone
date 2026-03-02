@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { useWatchlist } from '../context/WatchlistContext';
 import { useTheme } from '../context/ThemeContext';
 import Button from './Button';
 import LogoDark from '../assets/images/Logodark.png';
@@ -11,10 +10,11 @@ const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { isAuthenticated, user, logout } = useAuth();
-  const { watchlist } = useWatchlist();
   const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+
+  const baseUrl = (process.env.REACT_APP_BASE_URL || 'http://localhost:8000').replace(/\/api\/?$/, '');
 
   const handleLogout = () => {
     logout();
@@ -37,20 +37,17 @@ const Navbar = () => {
         ? 'bg-gray-900 border-gray-800'
         : 'bg-white border-gray-200'
     }`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
 
-          {/* Logo */}
                     <Link to={isAuthenticated ? '/catalog' : '/'} className="flex items-center">
             <img
-              src={theme === 'dark' ? Logo : LogoDark} // ici on change selon le thème
+              src={theme === 'dark' ? Logo : LogoDark}
               alt="CINE ZONE Logo"
               className="h-10 w-auto object-contain select-none"
             />
           </Link>
 
-
-          {/* Navigation Desktop */}
           <div className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
               <Link
@@ -65,24 +62,17 @@ const Navbar = () => {
                 }`}
               >
                 {link.name}
-                {link.path === '/watchlist' && watchlist.length > 0 && (
-                  <span className="absolute -top-2 -right-3 bg-cyan-400 text-gray-900 text-xs font-bold px-1.5 py-0.5 rounded-full">
-                    {watchlist.length}
-                  </span>
-                )}
               </Link>
             ))}
           </div>
 
-          {/* Actions Desktop */}
           <div className="hidden md:flex items-center space-x-4">
 
-            {/* Thème */}
             <button
               onClick={toggleTheme}
               className={`px-2 py-1 rounded-md transition-colors ${theme === 'dark' ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
             >
-              {theme === 'dark' ? '🌙' : '☀️'}
+              {theme === 'dark' ? 'Mode sombre' : 'Mode clair'}
             </button>
 
             {isAuthenticated ? (
@@ -91,8 +81,12 @@ const Navbar = () => {
                   onClick={() => setProfileMenuOpen(!profileMenuOpen)}
                   className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors"
                 >
-                  <div className="w-8 h-8 bg-cyan-400 rounded-full flex items-center justify-center text-gray-900 font-semibold">
-                    {(user?.firstName?.[0] || user?.lastName?.[0])?.toUpperCase() || 'U'}
+                  <div className="w-8 h-8 bg-cyan-400 rounded-full overflow-hidden flex items-center justify-center text-gray-900 font-semibold">
+                    {user?.avatar ? (
+                      <img src={`${baseUrl}${user.avatar}`} alt="Avatar" className="w-full h-full object-cover" />
+                    ) : (
+                      (user?.firstName?.[0] || user?.lastName?.[0])?.toUpperCase() || 'U'
+                    )}
                   </div>
                   <svg
                     className={`w-4 h-4 transition-transform ${profileMenuOpen ? 'rotate-180' : ''}`}
@@ -107,7 +101,6 @@ const Navbar = () => {
                   </svg>
                 </button>
 
-                {/* Menu Profil */}
                 {profileMenuOpen && (
                   <div className={`absolute right-0 mt-2 w-56 rounded-lg shadow-xl border py-1 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-300'}`}>
                     <div className="px-4 py-3 border-b border-gray-700">
@@ -145,7 +138,6 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* Bouton Menu Mobile */}
           <div className="md:hidden">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -172,15 +164,18 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Menu Mobile */}
         {mobileMenuOpen && (
           <div className={`md:hidden py-4 border-t ${theme === 'dark' ? 'border-gray-800' : 'border-gray-300'}`}>
-            {/* Profil utilisateur en haut du menu mobile */}
+
             {isAuthenticated && (
               <div className={`px-4 py-3 mb-2 border-b ${theme === 'dark' ? 'border-gray-800' : 'border-gray-300'}`}>
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-cyan-400 rounded-full flex items-center justify-center text-gray-900 font-semibold">
-                    {(user?.firstName?.[0] || user?.lastName?.[0])?.toUpperCase() || 'U'}
+                  <div className="w-10 h-10 bg-cyan-400 rounded-full overflow-hidden flex items-center justify-center text-gray-900 font-semibold">
+                    {user?.avatar ? (
+                      <img src={`${baseUrl}${user.avatar}`} alt="Avatar" className="w-full h-full object-cover" />
+                    ) : (
+                      (user?.firstName?.[0] || user?.lastName?.[0])?.toUpperCase() || 'U'
+                    )}
                   </div>
                   <div>
                     <p className={`text-sm font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
@@ -194,15 +189,13 @@ const Navbar = () => {
               </div>
             )}
 
-            {/* Thème toggle en mobile */}
             <button
               onClick={toggleTheme}
               className={`w-full text-left py-2 px-4 text-base font-medium transition-colors ${theme === 'dark' ? 'text-gray-300 hover:text-white hover:bg-gray-800' : 'text-gray-700 hover:text-black hover:bg-gray-200'}`}
             >
-              {theme === 'dark' ? '🌙 Mode sombre' : '☀️ Mode clair'}
+              {theme === 'dark' ? 'Mode sombre' : 'Mode clair'}
             </button>
 
-            {/* Liens de navigation */}
             {navLinks.map((link) => (
               <Link
                 key={link.path}
@@ -217,15 +210,9 @@ const Navbar = () => {
                 }`}
               >
                 {link.name}
-                {link.path === '/watchlist' && watchlist.length > 0 && (
-                  <span className="ml-2 bg-cyan-400 text-gray-900 text-xs font-bold px-2 py-0.5 rounded-full">
-                    {watchlist.length}
-                  </span>
-                )}
               </Link>
             ))}
 
-            {/* Actions utilisateur */}
             {isAuthenticated ? (
               <>
                 <Link

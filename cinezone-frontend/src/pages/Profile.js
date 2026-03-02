@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { user as userApi } from '../utils/api';
 import { useAuth } from '../context/AuthContext';
 import { useWatchlist } from '../context/WatchlistContext';
@@ -40,6 +40,28 @@ const Profile = () => {
 
   const [showProfileConfirm, setShowProfileConfirm] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+  const [avatarLoading, setAvatarLoading] = useState(false);
+  const [avatarError, setAvatarError] = useState('');
+  const avatarInputRef = useRef(null);
+
+  const baseUrl = (process.env.REACT_APP_BASE_URL || 'http://localhost:8000').replace(/\/api\/?$/, '');
+
+  const handleAvatarChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setAvatarLoading(true);
+    setAvatarError('');
+    try {
+      const fd = new FormData();
+      fd.append('avatar', file);
+      const data = await userApi.updateAvatar(fd);
+      updateUser(data.user);
+    } catch (err) {
+      setAvatarError(err?.response?.data?.message || 'Erreur lors de la mise à jour de la photo');
+    } finally {
+      setAvatarLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (user) {
@@ -135,12 +157,41 @@ const Profile = () => {
 
         <div className={`rounded-lg p-8 shadow-xl mt-8 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
 
-          {/* Avatar */}
           <div className="flex items-center mb-8">
-            <div className="w-24 h-24 bg-cyan-400 rounded-full flex items-center justify-center text-gray-900 text-4xl font-bold">
-              {(user.firstName?.[0] || user.lastName?.[0])?.toUpperCase()}
+            <div className="relative group cursor-pointer" onClick={() => avatarInputRef.current?.click()}>
+              <div className="w-24 h-24 rounded-full overflow-hidden bg-cyan-400 flex items-center justify-center text-gray-900 text-4xl font-bold">
+                {user.avatar ? (
+                  <img
+                    src={`${baseUrl}${user.avatar}`}
+                    alt="Photo de profil"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  (user.firstName?.[0] || user.lastName?.[0])?.toUpperCase()
+                )}
+              </div>
+              <div className="absolute inset-0 rounded-full bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                {avatarLoading ? (
+                  <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                )}
+              </div>
+              <input
+                ref={avatarInputRef}
+                type="file"
+                accept="image/jpeg,image/jpg,image/png,image/webp"
+                className="hidden"
+                onChange={handleAvatarChange}
+              />
             </div>
             <div className="ml-6">
+              {avatarError && (
+                <p className="text-red-500 text-xs mb-2">{avatarError}</p>
+              )}
               <h2 className={`text-2xl font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
                 {user.firstName} {user.lastName}
               </h2>
@@ -148,7 +199,6 @@ const Profile = () => {
             </div>
           </div>
 
-          {/* --------  INFOS PERSONNELLES -------- */}
           <form onSubmit={handleSubmit} className="space-y-6">
 
             {success && (
@@ -181,7 +231,6 @@ const Profile = () => {
               />
             </div>
 
-            {/* EMAIL NON MODIFIABLE */}
             <Input
               label="Email"
               type="email"
@@ -196,7 +245,6 @@ const Profile = () => {
             </Button>
           </form>
 
-          {/* --------  CHANGER MOT DE PASSE -------- */}
           <div className={`mt-12 pt-8 border-t ${theme === 'dark' ? 'border-gray-700' : 'border-gray-300'}`}>
             <h3 className={`text-xl font-semibold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
               Changer le mot de passe
@@ -248,7 +296,6 @@ const Profile = () => {
             </form>
           </div>
 
-          {/* --------  STATISTIQUES (Cachées pour les administrateurs) -------- */}
           {user.role !== 'admin' && (
             <div className={`mt-8 pt-8 border-t ${theme === 'dark' ? 'border-gray-700' : 'border-gray-300'}`}>
               <h3 className={`text-xl font-semibold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
@@ -286,7 +333,6 @@ const Profile = () => {
 
         </div>
 
-        {/* Confirmation Dialogs */}
         <ConfirmDialog
           isOpen={showProfileConfirm}
           onClose={() => setShowProfileConfirm(false)}

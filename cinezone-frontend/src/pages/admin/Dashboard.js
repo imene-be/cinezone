@@ -19,7 +19,7 @@ const AdminDashboard = () => {
 
   const fetchStats = async () => {
     try {
-      // Utiliser Promise.allSettled pour que les erreurs individuelles n'arrêtent pas tout
+
       const [moviesResult, categoriesResult, usersResult] = await Promise.allSettled([
         moviesApi.getAllWithPagination({ limit: 500 }),
         categoriesApi.getAllWithPagination({ limit: 500 }),
@@ -85,7 +85,7 @@ const AdminDashboard = () => {
   return (
     <div className={`min-h-screen py-8 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
+
         <div className="mb-8">
           <h1 className={`text-4xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
             Dashboard Administrateur
@@ -95,7 +95,6 @@ const AdminDashboard = () => {
           </p>
         </div>
 
-        {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           {dashboardCards.map((card) => (
             <Link
@@ -122,7 +121,6 @@ const AdminDashboard = () => {
           ))}
         </div>
 
-        {/* Quick Actions */}
         <div className={`rounded-lg p-6 shadow-lg ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
           <h2 className={`text-2xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
             Actions rapides

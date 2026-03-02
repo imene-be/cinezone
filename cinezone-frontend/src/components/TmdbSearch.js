@@ -22,13 +22,14 @@ const TmdbSearch = ({ onSelectMovie, currentFormData }) => {
     }, 500);
 
     return () => clearTimeout(delayDebounceFn);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery]);
 
   const handleSearch = async () => {
     setLoading(true);
     try {
       const results = await searchMovies(searchQuery);
-      setSearchResults(results.slice(0, 5)); // Limiter à 5 résultats
+      setSearchResults(results.slice(0, 5));
     } catch (error) {
       console.error('Erreur de recherche TMDB:', error);
     } finally {
@@ -39,7 +40,7 @@ const TmdbSearch = ({ onSelectMovie, currentFormData }) => {
   const handleSelectMovie = async (movie) => {
     setLoadingDetails(true);
     try {
-      // Récupérer les détails complets du film
+
       const details = await getMovieDetails(movie.id);
       const convertedMovie = convertTmdbToMovie(details);
       setSelectedMovie({ ...movie, ...details, converted: convertedMovie });
@@ -53,10 +54,9 @@ const TmdbSearch = ({ onSelectMovie, currentFormData }) => {
 
   const handleConfirm = () => {
     if (selectedMovie) {
-      // Ne remplir que les champs vides
+
       const newData = { ...selectedMovie.converted };
 
-      // Vérifier chaque champ et ne remplir que s'il est vide
       Object.keys(newData).forEach(key => {
         if (currentFormData[key] && currentFormData[key] !== '') {
           delete newData[key];
@@ -78,7 +78,7 @@ const TmdbSearch = ({ onSelectMovie, currentFormData }) => {
 
   return (
     <div className="mb-6">
-      {/* Barre de recherche */}
+
       <div className="relative">
         <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
           🎬 Rechercher sur TMDB (optionnel)
@@ -102,7 +102,6 @@ const TmdbSearch = ({ onSelectMovie, currentFormData }) => {
           )}
         </div>
 
-        {/* Résultats de recherche */}
         {searchResults.length > 0 && (
           <div className={`absolute z-10 w-full mt-2 rounded-lg shadow-lg overflow-hidden ${
             theme === 'dark' ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'
@@ -143,20 +142,18 @@ const TmdbSearch = ({ onSelectMovie, currentFormData }) => {
         )}
       </div>
 
-      {/* Modal de confirmation */}
       {showModal && selectedMovie && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
           <div className={`max-w-2xl w-full rounded-lg shadow-xl ${
             theme === 'dark' ? 'bg-gray-800' : 'bg-white'
           }`}>
-            {/* Header */}
+
             <div className={`p-6 border-b ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
               <h3 className={`text-xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
                 Importer depuis TMDB
               </h3>
             </div>
 
-            {/* Content */}
             <div className="p-6 max-h-96 overflow-y-auto">
               <div className="flex space-x-4">
                 {selectedMovie.poster_path && (
@@ -194,7 +191,6 @@ const TmdbSearch = ({ onSelectMovie, currentFormData }) => {
               </div>
             </div>
 
-            {/* Footer */}
             <div className={`p-6 border-t flex justify-end space-x-3 ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
               <Button
                 variant="secondary"

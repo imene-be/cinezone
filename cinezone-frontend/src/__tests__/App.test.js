@@ -1,5 +1,3 @@
-// Tests unitaires Frontend - CineZone
-
 describe('Tests Basiques', () => {
 
   test('L\'application existe', () => {

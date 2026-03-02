@@ -3,10 +3,8 @@ import axios from 'axios';
 const TMDB_API_KEY = process.env.REACT_APP_TMDB_API_KEY;
 const TMDB_BASE_URL = process.env.REACT_APP_TMDB_BASE_URL || 'https://api.themoviedb.org/3';
 
-// Détecter si c'est un Bearer Token (JWT) ou une clé API
 const isBearerToken = TMDB_API_KEY && TMDB_API_KEY.startsWith('eyJ');
 
-// Instance axios pour TMDB
 const tmdbApi = axios.create({
   baseURL: TMDB_BASE_URL,
   params: isBearerToken ? { language: 'fr-FR' } : {
@@ -19,7 +17,6 @@ const tmdbApi = axios.create({
   } : {}
 });
 
-// Rechercher des films par titre
 export const searchMovies = async (query) => {
   try {
     const response = await tmdbApi.get('/search/movie', {
@@ -32,7 +29,6 @@ export const searchMovies = async (query) => {
   }
 };
 
-// Récupérer les détails d'un film
 export const getMovieDetails = async (tmdbId) => {
   try {
     const response = await tmdbApi.get(`/movie/${tmdbId}`);
@@ -43,7 +39,6 @@ export const getMovieDetails = async (tmdbId) => {
   }
 };
 
-// Récupérer les genres TMDB
 export const getGenres = async () => {
   try {
     const response = await tmdbApi.get('/genre/movie/list');
@@ -54,7 +49,6 @@ export const getGenres = async () => {
   }
 };
 
-// Récupérer les films similaires
 export const getSimilarMovies = async (tmdbId) => {
   try {
     const response = await tmdbApi.get(`/movie/${tmdbId}/similar`);
@@ -65,7 +59,6 @@ export const getSimilarMovies = async (tmdbId) => {
   }
 };
 
-// Convertir un film TMDB en format CineZone
 export const convertTmdbToMovie = (tmdbMovie) => {
   return {
     title: tmdbMovie.title || '',
@@ -75,19 +68,18 @@ export const convertTmdbToMovie = (tmdbMovie) => {
     poster: tmdbMovie.poster_path
       ? getTmdbImageUrl(tmdbMovie.poster_path, 'w500')
       : '',
-    trailer: '', // TMDB ne fournit pas directement le trailer dans les détails basiques
+    trailer: '',
     tmdbId: tmdbMovie.id,
     tmdbGenres: tmdbMovie.genres || tmdbMovie.genre_ids || []
   };
 };
 
-// Obtenir l'URL complète de l'image
 export const getTmdbImageUrl = (path, size = 'w500') => {
   if (!path) return null;
   return `https://image.tmdb.org/t/p/${size}${path}`;
 };
 
-export default {
+const tmdb = {
   searchMovies,
   getMovieDetails,
   getGenres,
@@ -95,3 +87,5 @@ export default {
   convertTmdbToMovie,
   getTmdbImageUrl
 };
+
+export default tmdb;
