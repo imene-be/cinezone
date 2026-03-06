@@ -141,7 +141,9 @@ const MovieCard = ({ movie, index = 0 }) => {
         </h3>
 
         <div className={`flex items-center justify-between text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-          <time dateTime={movie.releaseYear}>{movie.releaseYear || 'N/A'}</time>
+          <time dateTime={movie.releaseYear || movie.releaseDate}>
+            {movie.releaseYear || (movie.releaseDate ? new Date(movie.releaseDate).getFullYear() : 'N/A')}
+          </time>
           {movie.rating && (
             <div className="flex items-center" aria-label={`Note: ${movie.rating.toFixed(1)} sur 10`}>
               <svg className="w-3 h-3 text-yellow-400 mr-0.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">

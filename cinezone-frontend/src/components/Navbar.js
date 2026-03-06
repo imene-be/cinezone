@@ -40,13 +40,14 @@ const Navbar = () => {
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
 
-                    <Link to={isAuthenticated ? '/catalog' : '/'} className="flex items-center">
-            <img
-              src={theme === 'dark' ? Logo : LogoDark}
-              alt="CINE ZONE Logo"
-              className="h-10 w-auto object-contain select-none"
-            />
-          </Link>
+                    <div className="flex items-center space-x-8">
+            <Link to={isAuthenticated ? '/catalog' : '/'} className="flex items-center">
+              <img
+                src={theme === 'dark' ? Logo : LogoDark}
+                alt="CINE ZONE Logo"
+                className="h-10 w-auto object-contain select-none"
+              />
+            </Link>
 
           <div className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
@@ -64,6 +65,7 @@ const Navbar = () => {
                 {link.name}
               </Link>
             ))}
+          </div>
           </div>
 
           <div className="hidden md:flex items-center space-x-4">
